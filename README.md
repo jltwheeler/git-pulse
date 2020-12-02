@@ -43,6 +43,12 @@
 - How to handle user auth? 60 hit /day rate limit without auth, 5000 with auth
   token in header
 - mocking cli apps and api's
+- Establish CI/CD pipeline using github actions. Tasks should include:
+  - install (`npm ci` and `npm audit`)
+  - lint (`eslint` and `prettier`)
+  - test (`jest` + generate code coverage)
+  - build (transpile using `typescript`)
+  - push (release tag `github` and `npm publish`)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -54,7 +60,9 @@ Node CLI tool to get concise information from github repos you follow.
 
 ### Built With
 
-- [Example major framework / library](link)
+- [graphql-request](https://www.npmjs.com/package/graphql-request)
+- [GitHub GraphQL API](https://docs.github.com/en/github-ae@latest/graphql/overview/about-the-graphql-api)
+- [yargs](https://www.npmjs.com/package/yargs)
 
 <!-- GETTING STARTED -->
 
