@@ -1,8 +1,7 @@
-issues:
-  # Links to issues you are tracking go here
-  - test issue
-repos:
-  # Links to repositories you are following go here
-  - repo one
+# Links to issues you are tracking go here
+issues: []
+# Links to repositories you are following go here
+repos: []
+# Personal username info
 username:
-  # Personal username info
+  authToken:
