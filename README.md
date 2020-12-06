@@ -36,13 +36,17 @@
 
 ## TODO
 
-- User runs commands to init config file, see latest repo versions, latest
-  issue summaries that they track etc.
-- command for adding things to config?
-- User config files best practice (linux for now)
-- How to handle user auth? 60 hit /day rate limit without auth, 5000 with auth
-  token in header
-- mocking cli apps and api's
+- Commands:
+  - init [--token, --issues , --repos]
+  - repos [add, ls, rm]
+  - issues [add, ls, rm]
+  - config [ls]
+  - stats
+  - help
+  - validate
+  - version
+- styling outputs
+- best way to test yargs, integration using execa?
 - Establish CI/CD pipeline using github actions. Tasks should include:
   - install (`npm ci` and `npm audit`)
   - lint (`eslint` and `prettier`)
