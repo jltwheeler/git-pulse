@@ -5,36 +5,19 @@ import fs from "fs";
 import path from "path";
 
 import {
-  configOutputName,
+  configOutputPath,
   configDir,
   configTemplateName,
 } from "../utils/constants";
-import { isObject } from "../utils/parsers";
+import { parseConfigYaml } from "../utils/parsers";
 import { Config, InitArgs } from "../types/types";
-
-const parseYaml = (): Config => {
-  const yamlStr: string = fs.readFileSync(
-    path.resolve(__dirname, `../templates/${configTemplateName}`),
-    "utf-8",
-  );
-
-  const config = yaml.safeLoad(yamlStr);
-
-  if (!isObject(config)) {
-    throw new Error(
-      "Something went wrong whilst creating the configuration file",
-    );
-  }
-
-  return config;
-};
 
 const generateConfigFile = (configDir: string, token: string): string => {
   fs.mkdirSync(configDir);
 
-  const configOutputPath: string = path.resolve(configDir, configOutputName);
-
-  const config: Config = parseYaml();
+  const config: Config = parseConfigYaml(
+    path.resolve(__dirname, `../templates/${configTemplateName}`),
+  );
   config.username.authToken = token;
 
   fs.writeFileSync(configOutputPath, yaml.safeDump(config));
@@ -43,23 +26,23 @@ const generateConfigFile = (configDir: string, token: string): string => {
 
 export default {
   command: "init",
-  desc: "initialises the user's config file",
+  desc: "Initialises the user's config file",
   builder: (yargs: Argv): Argv<InitArgs> =>
     yargs.options({
       token: {
         alias: "t",
-        describe: "A users github profile token",
+        describe: "A user's github profile token",
         type: "string",
-        demandOption: true,
+        default: "secret",
       },
       repos: {
         alias: "r",
-        describe: "A users github profile token",
+        describe: "List of repos you would like to track",
         type: "array",
       },
       issues: {
         alias: "i",
-        describe: "A users github profile token",
+        describe: "List of issues you would like to track",
         type: "array",
       },
     }),
