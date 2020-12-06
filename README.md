@@ -40,12 +40,14 @@
   - init [--token, --issues , --repos]
   - repos [add, ls, rm]
   - issues [add, ls, rm]
-  - config [ls]
+  - config [ls, token]
   - stats
+  - trending [repos, devs] - will need to write scraper for this
   - help
   - validate
   - version
 - styling outputs
+- Repo admin - contribution guide, issue/feature templates etc.
 - best way to test yargs, integration using execa?
 - Establish CI/CD pipeline using github actions. Tasks should include:
   - install (`npm ci` and `npm audit`)
