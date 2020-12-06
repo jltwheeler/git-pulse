@@ -12,3 +12,16 @@ export const removeConfig = (): void => {
 export const loadYamlConfig = (): Config => {
   return parseConfigYaml(configOutputPath);
 };
+
+export const testRepos = [
+  "https://github.com/Microsoft/TypeScript",
+  "https://github.com/facebook/create-react-app",
+  "https://github.com/docker/cli",
+  "https://github.com/docker/compose",
+];
+
+export const testIssues = [
+  "https://github.com/CesiumGS/gltf-pipeline/issues/549",
+  "https://github.com/vercel/swr/issues/781",
+  "https://github.com/mui-org/material-ui/issues/16947",
+];

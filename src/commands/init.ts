@@ -9,16 +9,25 @@ import {
   configDir,
   configTemplateName,
 } from "../utils/constants";
-import { parseConfigYaml } from "../utils/parsers";
+import { parseConfigYaml, isStringArray } from "../utils/parsers";
 import { Config, InitArgs } from "../types/types";
 
-const generateConfigFile = (configDir: string, token: string): string => {
+const generateConfigFile = (configDir: string, args: InitArgs): string => {
   fs.mkdirSync(configDir);
 
   const config: Config = parseConfigYaml(
     path.resolve(__dirname, `../templates/${configTemplateName}`),
   );
-  config.username.authToken = token;
+
+  if (args.token) {
+    config.username.authToken = args.token;
+  }
+  if (args.issues && isStringArray(args.issues)) {
+    config.issues = args.issues;
+  }
+  if (args.repos && isStringArray(args.repos)) {
+    config.repos = args.repos;
+  }
 
   fs.writeFileSync(configOutputPath, yaml.safeDump(config));
   return configOutputPath;
@@ -47,14 +56,17 @@ export default {
       },
     }),
   handler: (args: Arguments<InitArgs>): void => {
-    // if file exists, perhaps ask user if they want to overwrite??
     if (!fs.existsSync(configDir)) {
-      const configOutputPath = generateConfigFile(configDir, args.token);
-
+      const configOutputPath = generateConfigFile(configDir, {
+        token: args.token,
+        issues: args?.issues,
+        repos: args?.repos,
+      });
       console.log(`Written config file at: ${configOutputPath}`);
     } else {
-      console.log(args.issues);
-      console.log("Config file already exists.");
+      throw new Error(
+        `Config file already exists at: ${configOutputPath}. Please use git-pulse config commands to update config`,
+      );
     }
   },
 };

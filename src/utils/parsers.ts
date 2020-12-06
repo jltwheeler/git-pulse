@@ -10,6 +10,15 @@ export const isObject = (object: any): object is Config => {
   return typeof object === "object";
 };
 
+export const isStringArray = (input: any): input is string[] => {
+  if (Array.isArray(input))
+    return (
+      (Array.isArray(input) && typeof input[0] === "string") ||
+      (Array.isArray(input) && input[0] instanceof String)
+    );
+  return false;
+};
+
 export const parseConfigYaml = (path: string): Config => {
   const yamlStr: string = fs.readFileSync(path, "utf-8");
 
