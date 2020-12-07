@@ -9,17 +9,17 @@ describe("Initialise command", () => {
     removeConfig();
   });
 
-  describe("Repeatted initialise command called", () => {
-    test("should let user know a config file already exists if init has already been run", () => {
-      yargs(["init"]).command(init).argv;
+  // describe("Repeatted initialise command called", () => {
+  //   test("should let user know a config file already exists if init has already been run", () => {
+  //     yargs(["init"]).command(init).argv;
 
-      const secondInitcall = () => {
-        yargs(["init"]).command(init).argv;
-      };
+  //     const secondInitcall = () => {
+  //       yargs(["init"]).command(init).argv;
+  //     };
 
-      expect(secondInitcall).toThrow(Error);
-    });
-  });
+  //     expect(secondInitcall).toThrow(Error);
+  //   });
+  // });
 
   describe("Initialise token tests", () => {
     test("should create a config file with default auth key", () => {
@@ -40,15 +40,16 @@ describe("Initialise command", () => {
     });
   });
 
-  describe("Initialise repo tests", () => {
-    describe("should add repos to config file", () => {
-      test("should placeholder", () => {
-        expect(1).toBe(1);
-      });
-    });
-  });
-
-  // afterAll(() => {
-  //   removeConfig();
+  // describe("Initialise repo tests", () => {
+  //   describe("should add repos to config file", () => {
+  //     test.only("should placeholder", () => {
+  //       const args = ["init", "--r"].concat(testRepos);
+  //       yargs(args).command(init).argv;
+  //     });
+  //   });
   // });
+
+  afterAll(() => {
+    removeConfig();
+  });
 });
