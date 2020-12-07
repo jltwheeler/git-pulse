@@ -8,11 +8,17 @@ import {
   configOutputPath,
   configDir,
   configTemplateName,
+  repoRegex,
 } from "../utils/constants";
 import { parseConfigYaml, isStringArray } from "../utils/parsers";
+import { createRepoQuery } from "../queries";
+import serviceRepo from "../services/repos";
 import { Config, InitArgs } from "../types/types";
 
-const generateConfigFile = (configDir: string, args: InitArgs): string => {
+const generateConfigFile = async (
+  configDir: string,
+  args: InitArgs,
+): Promise<string> => {
   fs.mkdirSync(configDir);
 
   const config: Config = parseConfigYaml(
@@ -22,10 +28,25 @@ const generateConfigFile = (configDir: string, args: InitArgs): string => {
   if (args.token) {
     config.username.authToken = args.token;
   }
+
   if (args.issues && isStringArray(args.issues)) {
     config.issues = args.issues;
   }
+
   if (args.repos && isStringArray(args.repos)) {
+    const queries: string[] = args.repos.map((repo: string, idx) => {
+      const result = repoRegex.exec(repo);
+      if (result) {
+        const [owner, name] = result[0].split("/");
+        return createRepoQuery(idx, name, owner);
+      } else {
+        throw new Error(`${repo} is not a correct repository URL`);
+      }
+    });
+
+    const data = await serviceRepo.tester(queries.join("\n"));
+    console.log(data);
+
     config.repos = args.repos;
   }
 
@@ -55,9 +76,9 @@ export default {
         type: "array",
       },
     }),
-  handler: (args: Arguments<InitArgs>): void => {
+  handler: async (args: Arguments<InitArgs>): Promise<void> => {
     if (!fs.existsSync(configDir)) {
-      const configOutputPath = generateConfigFile(configDir, {
+      const configOutputPath = await generateConfigFile(configDir, {
         token: args.token,
         issues: args?.issues,
         repos: args?.repos,
@@ -65,7 +86,7 @@ export default {
       console.log(`Written config file at: ${configOutputPath}`);
     } else {
       throw new Error(
-        `Config file already exists at: ${configOutputPath}. Please use git-pulse config commands to update config`,
+        `Config file already exists at: ${configOutputPath}. Please use git-pulse config commands to update any config settings.`,
       );
     }
   },

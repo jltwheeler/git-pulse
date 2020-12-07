@@ -8,3 +8,5 @@ export const configOutputPath: string = path.resolve(
   configDir,
   configOutputName,
 );
+export const GITHUB_API_ENDPOINT = "https://api.github.com/graphql";
+export const repoRegex = RegExp(/(?<=github.com\/)(.+\/.+$)/);
