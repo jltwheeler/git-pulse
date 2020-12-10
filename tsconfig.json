@@ -11,5 +11,4 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  // "exclude": ["src/**/*.test.ts"],
 }
