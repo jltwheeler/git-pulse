@@ -1,4 +1,9 @@
 import fs from "fs";
+import path from "path";
+
+import yargs from "yargs/yargs";
+import { CommandModule } from "yargs";
+
 import { Config } from "../types/types";
 import { configDir, configOutputPath } from "../utils/constants";
 import { parseConfigYaml } from "../utils/parsers";
@@ -9,8 +14,34 @@ export const removeConfig = (): void => {
   }
 };
 
+export const createDummyConfig = (): void => {
+  fs.mkdirSync(configDir);
+  const dummyText = fs.readFileSync(
+    path.resolve(__dirname, "data/testConfig.yml"),
+  );
+  fs.writeFileSync(configOutputPath, dummyText, "utf-8");
+};
+
 export const loadYamlConfig = (): Config => {
   return parseConfigYaml(configOutputPath);
+};
+
+export const asyncCommand = (
+  command: CommandModule,
+  args: string[],
+): Promise<unknown> => {
+  return new Promise((resolve, reject) => {
+    try {
+      yargs(args)
+        .command(command)
+        .onFinishCommand((r) => resolve(r))
+        .fail((_, err) => reject(err))
+        .exitProcess(false).argv;
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
 };
 
 export const testRepos = [

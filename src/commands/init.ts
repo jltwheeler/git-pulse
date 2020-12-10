@@ -1,4 +1,4 @@
-import { Arguments, Argv } from "yargs";
+import { Arguments, Argv, CommandModule } from "yargs";
 import yaml from "js-yaml";
 
 import fs from "fs";
@@ -54,9 +54,9 @@ const generateConfigFile = async (
   return configOutputPath;
 };
 
-export default {
+const initCommand: CommandModule = {
   command: "init",
-  desc: "Initialises the user's config file",
+  describe: "Initialises the user's config file",
   builder: (yargs: Argv): Argv<InitArgs> =>
     yargs.options({
       token: {
@@ -76,7 +76,7 @@ export default {
         type: "array",
       },
     }),
-  handler: async (args: Arguments<InitArgs>): Promise<void> => {
+  handler: async (args: Arguments<InitArgs>): Promise<boolean> => {
     if (!fs.existsSync(configDir)) {
       const configOutputPath = await generateConfigFile(configDir, {
         token: args.token,
@@ -84,10 +84,15 @@ export default {
         repos: args?.repos,
       });
       console.log(`Written config file at: ${configOutputPath}`);
+      return Promise.resolve(true);
     } else {
-      throw new Error(
-        `Config file already exists at: ${configOutputPath}. Please use git-pulse config commands to update any config settings.`,
+      return Promise.reject(
+        new Error(
+          `Config file already exists at: ${configOutputPath}. Please use git-pulse config commands to update any config settings.`,
+        ),
       );
     }
   },
 };
+
+export default initCommand;

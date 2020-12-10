@@ -1,38 +1,41 @@
-import yargs from "yargs/yargs";
-
 import init from "../commands/init";
 import { Config } from "../types/types";
-import { loadYamlConfig, removeConfig } from "./testHelpers";
+import {
+  asyncCommand,
+  createDummyConfig,
+  loadYamlConfig,
+  removeConfig,
+  testRepos,
+} from "./testHelpers";
 
 describe("Initialise command", () => {
   beforeEach(() => {
     removeConfig();
   });
 
-  // describe("Repeatted initialise command called", () => {
-  //   test("should let user know a config file already exists if init has already been run", () => {
-  //     yargs(["init"]).command(init).argv;
+  describe("Repeatted initialise command called", () => {
+    test("should let user know a config file already exists if init has already been run", async () => {
+      createDummyConfig();
 
-  //     const secondInitcall = () => {
-  //       yargs(["init"]).command(init).argv;
-  //     };
+      const command = asyncCommand(init, ["init"]);
 
-  //     expect(secondInitcall).toThrow(Error);
-  //   });
-  // });
+      await expect(command).rejects.toThrow(Error);
+    });
+  });
 
   describe("Initialise token tests", () => {
-    test("should create a config file with default auth key", () => {
-      yargs(["init"]).command(init).argv;
+    test("should create a config file with default auth key", async () => {
+      await asyncCommand(init, ["init"]);
 
       const result: Config = loadYamlConfig();
 
       expect(result.username.authToken).toBe("secret");
     });
 
-    test("should create a config file with passed in user auth key", () => {
+    test("should create a config file with passed in user auth key", async () => {
       const token = "my_random_token";
-      yargs(["init", "--t", token]).command(init).argv;
+
+      await asyncCommand(init, ["init", "--t", token]);
 
       const result: Config = loadYamlConfig();
 
@@ -40,14 +43,17 @@ describe("Initialise command", () => {
     });
   });
 
-  // describe("Initialise repo tests", () => {
-  //   describe("should add repos to config file", () => {
-  //     test.only("should placeholder", () => {
-  //       const args = ["init", "--r"].concat(testRepos);
-  //       yargs(args).command(init).argv;
-  //     });
-  //   });
-  // });
+  describe("Initialise repo tests", () => {
+    describe("should add repos to config file", () => {
+      test("should placeholder", async () => {
+        const args = ["init", "--r"].concat(testRepos);
+
+        const commandPromise = asyncCommand(init, args);
+
+        await commandPromise;
+      });
+    });
+  });
 
   afterAll(() => {
     removeConfig();

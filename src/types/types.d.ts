@@ -1,7 +1,7 @@
 export interface InitArgs {
-  token: string;
-  repos: (string | number)[] | undefined;
-  issues: (string | number)[] | undefined;
+  token?: string;
+  repos?: (string | number)[] | undefined;
+  issues?: (string | number)[] | undefined;
 }
 
 export type tester = string;

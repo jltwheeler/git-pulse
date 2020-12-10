@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import yargs from "yargs/yargs";
+import chalk from "chalk";
 
 import initCmd from "./commands/init";
 
@@ -9,4 +10,6 @@ yargs(process.argv.slice(2))
   .scriptName("git-pulse")
   .usage("Usage: $0 -r string -i string")
   .command(initCmd)
-  .help().argv;
+  .fail((_, err) => console.log(chalk.red(err)))
+  .help()
+  .parse();
