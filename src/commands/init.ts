@@ -8,10 +8,8 @@ import {
   configOutputPath,
   configDir,
   configTemplateName,
-  repoRegex,
 } from "../utils/constants";
 import { parseConfigYaml, isStringArray } from "../utils/parsers";
-import { createRepoQuery } from "../queries";
 import serviceRepo from "../services/repos";
 import { Config, InitArgs } from "../types/types";
 
@@ -19,8 +17,6 @@ const generateConfigFile = async (
   configDir: string,
   args: InitArgs,
 ): Promise<string> => {
-  fs.mkdirSync(configDir);
-
   const config: Config = parseConfigYaml(
     path.resolve(__dirname, `../templates/${configTemplateName}`),
   );
@@ -34,22 +30,12 @@ const generateConfigFile = async (
   }
 
   if (args.repos && isStringArray(args.repos)) {
-    const queries: string[] = args.repos.map((repo: string, idx) => {
-      const result = repoRegex.exec(repo);
-      if (result) {
-        const [owner, name] = result[0].split("/");
-        return createRepoQuery(idx, name, owner);
-      } else {
-        throw new Error(`${repo} is not a correct repository URL`);
-      }
-    });
-
-    const data = await serviceRepo.tester(queries.join("\n"));
-    console.log(data);
+    await serviceRepo.sendInitQuery(args.repos);
 
     config.repos = args.repos;
   }
 
+  fs.mkdirSync(configDir);
   fs.writeFileSync(configOutputPath, yaml.safeDump(config));
   return configOutputPath;
 };

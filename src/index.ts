@@ -10,6 +10,6 @@ yargs(process.argv.slice(2))
   .scriptName("git-pulse")
   .usage("Usage: $0 -r string -i string")
   .command(initCmd)
-  .fail((_, err) => console.log(chalk.red(err)))
+  .fail((_, error) => console.log(chalk.red(error)))
   .help()
   .parse();
