@@ -44,14 +44,25 @@ describe("Initialise command", () => {
   });
 
   describe("Initialise repo tests", () => {
-    describe("should add repos to config file", () => {
-      test("should placeholder", async () => {
-        const args = ["init", "--r"].concat(testRepos);
+    test("should add repos to config if they exist", async () => {
+      const args = ["init", "--r"].concat(testRepos);
 
-        const commandPromise = asyncCommand(init, args);
+      const command = asyncCommand(init, args);
 
-        await commandPromise;
-      });
+      await command;
+
+      const result: Config = loadYamlConfig();
+      expect(result.repos).toHaveLength(4);
+      expect(result.repos[0]).toBe("https://github.com/Microsoft/TypeScript");
+    });
+
+    test("should error and tell user a repo does not exist", async () => {
+      const incorrectRepos = [...testRepos, "incorrect/repo"];
+      const args = ["init", "--r"].concat(incorrectRepos);
+
+      const command = asyncCommand(init, args);
+
+      await expect(command).rejects.toThrow(Error);
     });
   });
 

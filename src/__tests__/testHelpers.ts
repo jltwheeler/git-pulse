@@ -35,7 +35,7 @@ export const asyncCommand = (
       yargs(args)
         .command(command)
         .onFinishCommand((r) => resolve(r))
-        .fail((_, err) => reject(err))
+        .fail((_, error) => reject(error))
         .exitProcess(false).argv;
     } catch (e) {
       console.log(e);
