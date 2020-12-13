@@ -16,10 +16,12 @@ const sendInitQuery = async (repos: string[]): Promise<string> => {
   });
 
   const query = gql`
-    query {
+    query getRepositories {
      ${queries.join("\n")}
     }
   `;
+  console.log(query);
+  console.log(client);
   return await client.request(query);
 };
 
