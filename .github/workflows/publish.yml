@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: 14
           registry-url: 'https://registry.npmjs.org'
+      - name: 📦 install packages
         run: npm ci
       - name: 🛂 lint
         run : npm run lint
