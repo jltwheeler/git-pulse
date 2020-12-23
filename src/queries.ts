@@ -1,4 +1,4 @@
-// import { gql } from "graphql-request";
+import { gql } from "graphql-request";
 
 export const createRepoQuery = (
   prefix: number,
@@ -9,3 +9,11 @@ export const createRepoQuery = (
     description
   }`;
 };
+
+export const USER_RATE_LIMIT = gql`
+  {
+    rateLimit {
+      limit
+    }
+  }
+`;
