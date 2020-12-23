@@ -6,6 +6,10 @@ import chalk from "chalk";
 
 import initCmd from "./commands/init";
 
+interface Answers {
+  token: "string";
+}
+
 yargs(process.argv.slice(2))
   .version(process.env?.npm_package_version || "0.0.0")
   .scriptName("git-pulse")
@@ -20,7 +24,7 @@ yargs(process.argv.slice(2))
           message: "Please enter your GitHub user account token.",
         },
       ])
-      .then((answers: { token: string }) => {
+      .then((answers: Answers) => {
         console.log(`Thank you, your github token ${answers.token} is valid.`);
       })
       .catch((error) => {
