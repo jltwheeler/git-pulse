@@ -27,8 +27,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "npm run lint",
-      "npm run test:staged"
+      "npm run lint"
     ]
   },
   "repository": {
@@ -49,6 +48,7 @@
   },
   "homepage": "https://github.com/jltwheeler/git-pulse#readme",
   "devDependencies": {
+    "@types/clear": "^0.1.1",
     "@types/inquirer": "^7.3.1",
     "@types/jest": "^26.0.15",
     "@types/js-yaml": "^3.12.5",
@@ -74,6 +74,7 @@
   "dependencies": {
     "boxen": "^4.2.0",
     "chalk": "^4.1.0",
+    "clear": "^0.1.0",
     "cli-spinners": "^2.5.0",
     "cli-table3": "^0.6.0",
     "graphql": "^15.4.0",
