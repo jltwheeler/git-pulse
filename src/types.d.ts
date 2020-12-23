@@ -16,10 +16,20 @@ export interface TokenAnswer {
   token: string;
 }
 
-export interface RepoAnswer {
+export interface InitReposAnswer {
   addRepos: boolean;
 }
 
-export interface IssuesAnswer {
+export interface InsertRepoAnswer {
+  repo: string;
+  continue: true;
+}
+
+export interface InitIssuesAnswer {
   addIssues: boolean;
+}
+
+export interface InsertIssueAnswer {
+  issue: string;
+  continue: true;
 }

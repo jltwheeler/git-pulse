@@ -3,8 +3,9 @@
 import fs from "fs";
 
 import yaml from "js-yaml";
+import chalk from "chalk";
 
-import { Config } from "../types/types";
+import { Config } from "../types";
 
 export const isObject = (object: any): object is Config => {
   return typeof object === "object";
@@ -31,4 +32,10 @@ export const parseConfigYaml = (path: string): Config => {
   }
 
   return config;
+};
+
+export const handleError = (error: any) => {
+  if (error instanceof Error) {
+    console.log(chalk.red(error.message));
+  }
 };
