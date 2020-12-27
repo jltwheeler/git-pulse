@@ -28,11 +28,14 @@ const insertIssueQuestion = (): Promise<InsertIssueAnswer> => {
   ]);
 };
 
-export const addIssueQuestions = async (): Promise<void> => {
+export const addIssueQuestions = async (): Promise<string[]> => {
   let run = true;
+  let issues: string[] = [];
 
   const recurse = async () => {
     const answer = await insertIssueQuestion();
+    issues = issues.concat(answer.issue);
+
     if (answer.continue) {
       await recurse();
     } else {
@@ -43,4 +46,5 @@ export const addIssueQuestions = async (): Promise<void> => {
   while (run) {
     await recurse();
   }
+  return issues;
 };

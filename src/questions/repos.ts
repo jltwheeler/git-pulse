@@ -18,7 +18,8 @@ const insertRepoQuestion = (): Promise<InsertRepoAnswer> => {
     {
       type: "string",
       name: "repo",
-      message: "Please enter a repository you would like to track",
+      message:
+        "Please enter the link of the repository you would like to track.",
     },
     {
       type: "confirm",
@@ -28,11 +29,14 @@ const insertRepoQuestion = (): Promise<InsertRepoAnswer> => {
   ]);
 };
 
-export const addRepoQuestions = async (): Promise<void> => {
+export const addRepoQuestions = async (): Promise<string[]> => {
   let run = true;
+  let repos: string[] = [];
 
   const recurse = async () => {
     const answer = await insertRepoQuestion();
+    repos = repos.concat(answer.repo);
+
     if (answer.continue) {
       await recurse();
     } else {
@@ -43,4 +47,5 @@ export const addRepoQuestions = async (): Promise<void> => {
   while (run) {
     await recurse();
   }
+  return repos;
 };
