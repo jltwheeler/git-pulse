@@ -11,7 +11,7 @@ export const createRepoQuery = (
 };
 
 export const USER_RATE_LIMIT = gql`
-  {
+  query userAuth {
     rateLimit {
       limit
     }

@@ -1,19 +1,38 @@
-import init from "../commands/init";
-import { Config } from "../types/types";
+import * as dotenv from "dotenv";
+
 import {
   asyncCommand,
   createDummyConfig,
   loadYamlConfig,
   removeConfig,
   testRepos,
+  testIssues,
 } from "./testHelpers";
+import { Config } from "../types";
+import init from "../commands/init";
+import { mockServer } from "../mocks/server";
+import * as questionIssues from "../questions/issues";
+import * as questionRepos from "../questions/repos";
+
+jest.mock("../questions/issues");
+jest.mock("../questions/repos");
+jest.mock("../questions/token");
+
+dotenv.config();
+// const TOKEN: string = process.env?.GITHUB_TOKEN
+//   ? process.env.GITHUB_TOKEN
+//   : "secret";
 
 describe("Initialise command", () => {
+  beforeAll(() => {
+    mockServer.listen();
+  });
+
   beforeEach(() => {
     removeConfig();
   });
 
-  describe("Repeatted initialise command called", () => {
+  describe("Call init command whilst already having a config file", () => {
     test("should let user know a config file already exists if init has already been run", async () => {
       createDummyConfig();
 
@@ -23,50 +42,50 @@ describe("Initialise command", () => {
     });
   });
 
-  describe("Initialise token tests", () => {
-    test("should create a config file with default auth key", async () => {
+  describe("Generation of config file", () => {
+    test("should generate config file with valid issues and repos", async () => {
       await asyncCommand(init, ["init"]);
 
       const result: Config = loadYamlConfig();
 
-      expect(result.username.authToken).toBe("secret");
+      expect(result.username.authToken).toBe("my_token");
+      expect(result.issues).toEqual(testIssues);
+      expect(result.repos).toEqual(testRepos);
     });
 
-    test("should create a config file with passed in user auth key", async () => {
-      const token = "my_random_token";
+    test("should generate config file with valid repos only", async () => {
+      (questionIssues.initIssuesQuestion as jest.Mock).mockImplementationOnce(
+        () => Promise.resolve({ addIssues: false }),
+      );
 
-      await asyncCommand(init, ["init", "--t", token]);
+      await asyncCommand(init, ["init"]);
 
       const result: Config = loadYamlConfig();
 
-      expect(result.username.authToken).toBe(token);
+      expect(result.username.authToken).toBe("my_token");
+      expect(result.repos).toEqual(testRepos);
+    });
+
+    test("should generate config file with valid issues only", async () => {
+      (questionRepos.initReposQuestion as jest.Mock).mockImplementationOnce(
+        () => Promise.resolve({ addRepos: false }),
+      );
+
+      await asyncCommand(init, ["init"]);
+
+      const result: Config = loadYamlConfig();
+
+      expect(result.username.authToken).toBe("my_token");
+      expect(result.issues).toEqual(testIssues);
     });
   });
 
-  describe("Initialise repo tests", () => {
-    //test("should add repos to config if they exist", async () => {
-    //const args = ["init", "--r"].concat(testRepos);
-
-    //const command = asyncCommand(init, args);
-
-    //await command;
-
-    //const result: Config = loadYamlConfig();
-    //expect(result.repos).toHaveLength(4);
-    //expect(result.repos[0]).toBe("https://github.com/Microsoft/TypeScript");
-    //});
-
-    test("should error and tell user a repo does not exist", async () => {
-      const incorrectRepos = [...testRepos, "incorrect/repo"];
-      const args = ["init", "--r"].concat(incorrectRepos);
-
-      const command = asyncCommand(init, args);
-
-      await expect(command).rejects.toThrow(Error);
-    });
+  afterEach(() => {
+    mockServer.resetHandlers();
   });
 
   afterAll(() => {
-    removeConfig();
+    // removeConfig();
+    mockServer.close();
   });
 });

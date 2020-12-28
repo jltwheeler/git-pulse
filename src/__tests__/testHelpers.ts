@@ -4,7 +4,7 @@ import path from "path";
 import yargs from "yargs/yargs";
 import { CommandModule } from "yargs";
 
-import { Config } from "../types/types";
+import { Config } from "../types";
 import { configDir, configOutputPath } from "../utils/constants";
 import { parseConfigYaml } from "../utils/parsers";
 

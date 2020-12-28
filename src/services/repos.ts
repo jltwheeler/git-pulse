@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import client from "../client";
+import { initClient } from "../client";
 
 import { createRepoQuery } from "../queries";
 import { repoRegex } from "../utils/constants";
@@ -20,11 +20,8 @@ const sendInitQuery = async (repos: string[]): Promise<string> => {
      ${queries.join("\n")}
     }
   `;
-  console.log(query);
-  console.log(client);
+  const client = initClient("test");
   return await client.request(query);
 };
 
-export default {
-  sendInitQuery,
-};
+export { sendInitQuery };

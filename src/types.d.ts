@@ -1,5 +1,9 @@
-export interface InitArgs {
-  token?: string;
+export interface ProcessEnv {
+  NODE_ENV: string | undefined;
+}
+
+export interface InitObject {
+  token: string;
   repos?: (string | number)[] | undefined;
   issues?: (string | number)[] | undefined;
 }

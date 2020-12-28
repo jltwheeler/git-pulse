@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 
 import { InitIssuesAnswer, InsertIssueAnswer } from "../types";
 
-export const initIssueQuestion = (): Promise<InitIssuesAnswer> => {
+export const initIssuesQuestion = (): Promise<InitIssuesAnswer> => {
   return inquirer.prompt([
     {
       type: "confirm",
