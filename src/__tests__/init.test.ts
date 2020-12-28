@@ -19,9 +19,9 @@ jest.mock("../questions/repos");
 jest.mock("../questions/token");
 
 dotenv.config();
-// const TOKEN: string = process.env?.GITHUB_TOKEN
-//   ? process.env.GITHUB_TOKEN
-//   : "secret";
+const TOKEN: string = process.env?.GITHUB_TOKEN
+  ? process.env.GITHUB_TOKEN
+  : "secret";
 
 describe("Initialise command", () => {
   beforeAll(() => {
@@ -48,7 +48,7 @@ describe("Initialise command", () => {
 
       const result: Config = loadYamlConfig();
 
-      expect(result.username.authToken).toBe("my_token");
+      expect(result.username.authToken).toBe(TOKEN);
       expect(result.issues).toEqual(testIssues);
       expect(result.repos).toEqual(testRepos);
     });
@@ -62,7 +62,7 @@ describe("Initialise command", () => {
 
       const result: Config = loadYamlConfig();
 
-      expect(result.username.authToken).toBe("my_token");
+      expect(result.username.authToken).toBe(TOKEN);
       expect(result.repos).toEqual(testRepos);
     });
 
@@ -75,7 +75,7 @@ describe("Initialise command", () => {
 
       const result: Config = loadYamlConfig();
 
-      expect(result.username.authToken).toBe("my_token");
+      expect(result.username.authToken).toBe(TOKEN);
       expect(result.issues).toEqual(testIssues);
     });
   });
