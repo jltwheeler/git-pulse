@@ -1,5 +1,3 @@
-import * as dotenv from "dotenv";
-
 import {
   asyncCommand,
   createDummyConfig,
@@ -7,6 +5,7 @@ import {
   removeConfig,
   testRepos,
   testIssues,
+  TOKEN,
 } from "./testHelpers";
 import { Config } from "../types";
 import init from "../commands/init";
@@ -17,11 +16,6 @@ import * as questionRepos from "../questions/repos";
 jest.mock("../questions/issues");
 jest.mock("../questions/repos");
 jest.mock("../questions/token");
-
-dotenv.config();
-const TOKEN: string = process.env?.GITHUB_TOKEN
-  ? process.env.GITHUB_TOKEN
-  : "secret";
 
 describe("Initialise command", () => {
   beforeAll(() => {
@@ -78,6 +72,10 @@ describe("Initialise command", () => {
       expect(result.username.authToken).toBe(TOKEN);
       expect(result.issues).toEqual(testIssues);
     });
+  });
+
+  describe("Dummy file", () => {
+    createDummyConfig();
   });
 
   afterEach(() => {

@@ -20,4 +20,12 @@ export const handlers = [
 
     throw new Error();
   }),
+  graphql.query("testInitClient", (req, res, ctx) => {
+    const headers = req.headers.getAllHeaders();
+    return res(
+      ctx.data({
+        header: headers.authorization,
+      }),
+    );
+  }),
 ];

@@ -3,10 +3,17 @@ import path from "path";
 
 import yargs from "yargs/yargs";
 import { CommandModule } from "yargs";
+import yaml from "js-yaml";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 import { Config } from "../types";
 import { configDir, configOutputPath } from "../utils/constants";
 import { parseConfigYaml } from "../utils/parsers";
+
+export const TOKEN: string = process.env?.GITHUB_TOKEN
+  ? process.env.GITHUB_TOKEN
+  : "secret";
 
 export const removeConfig = (): void => {
   if (fs.existsSync(configDir)) {
@@ -15,11 +22,14 @@ export const removeConfig = (): void => {
 };
 
 export const createDummyConfig = (): void => {
-  fs.mkdirSync(configDir);
-  const dummyText = fs.readFileSync(
+  const config: Config = parseConfigYaml(
     path.resolve(__dirname, "data/testConfig.yml"),
   );
-  fs.writeFileSync(configOutputPath, dummyText, "utf-8");
+
+  config.username.authToken = TOKEN;
+
+  fs.mkdirSync(configDir);
+  fs.writeFileSync(configOutputPath, yaml.safeDump(config));
 };
 
 export const loadYamlConfig = (): Config => {

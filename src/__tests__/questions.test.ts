@@ -1,12 +1,6 @@
-import * as dotenv from "dotenv";
-
 import { validateToken } from "../questions/token";
 import { mockServer } from "../mocks/server";
-
-dotenv.config();
-const TOKEN: string = process.env?.GITHUB_TOKEN
-  ? process.env.GITHUB_TOKEN
-  : "secret";
+import { TOKEN } from "./testHelpers";
 
 describe("Token questions", () => {
   beforeAll(() => {
