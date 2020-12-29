@@ -33,9 +33,7 @@ describe("Initialises a client correctly", () => {
       createDummyConfig();
       const token = loadYamlConfig().username.authToken;
 
-      const result: { header: string } = await initClient(token).request(
-        testQuery,
-      );
+      const result: { header: string } = await initClient().request(testQuery);
       expect(result.header).toContain(token);
     });
   });

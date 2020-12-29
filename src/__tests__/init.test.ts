@@ -83,7 +83,7 @@ describe("Initialise command", () => {
   });
 
   afterAll(() => {
-    // removeConfig();
+    removeConfig();
     mockServer.close();
   });
 });
