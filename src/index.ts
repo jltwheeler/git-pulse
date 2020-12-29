@@ -3,12 +3,12 @@
 import yargs from "yargs/yargs";
 // import chalk from "chalk";
 
-import { version } from "../package.json";
 import initCmd from "./commands/init";
 import configCommand from "./commands/config";
+import { getVersion } from "./utils/getVersion";
 
 yargs(process.argv.slice(2))
-  .version(version || "0.0.0")
+  .version(getVersion())
   .usage("Usage: $0 -r string -i string")
   .scriptName("git-pulse")
   .command(initCmd)
