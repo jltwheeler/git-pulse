@@ -15,10 +15,10 @@
     "build": "tsc && mkdir -p build/templates && cp -R src/templates/config.yml build/templates/config.yml",
     "clean:config": "rm -rf ~/.git-pulse",
     "lint": "eslint '*/**/*.{js,ts}' --quiet --fix",
-    "test": "jest --verbose",
-    "test:watch": "jest --verbose --watch",
-    "test:coverage": "jest --coverage",
-    "test:staged": "jest --findRelatedTests"
+    "test": "jest --runInBand --verbose",
+    "test:watch": "jest --runInBand --verbose --watch",
+    "test:coverage": "jest --runInBand --coverage",
+    "test:staged": "jest --runInBand --findRelatedTests"
   },
   "husky": {
     "hooks": {
