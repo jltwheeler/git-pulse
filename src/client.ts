@@ -1,13 +1,22 @@
 import { GraphQLClient } from "graphql-request";
-import { GITHUB_API_ENDPOINT } from "./utils/constants";
-import * as dotenv from "dotenv";
+import { configOutputPath, GITHUB_API_ENDPOINT } from "./utils/constants";
+import { parseConfigYaml } from "./utils/parsers";
+import { Config } from "./types";
+import fs from "fs";
 
-dotenv.config();
+export const initClient = (token?: string): GraphQLClient => {
+  const headers = { Authorization: "" };
 
-const TOKEN: string | undefined = process.env?.GITHUB_TOKEN;
+  if (token) {
+    headers.Authorization = `token ${token}`;
+  } else {
+    if (fs.existsSync(configOutputPath)) {
+      const config: Config = parseConfigYaml(configOutputPath);
+      headers.Authorization = `token ${config.username.authToken}`;
+    }
+  }
 
-export default new GraphQLClient(GITHUB_API_ENDPOINT, {
-  headers: {
-    Authorization: `token ${TOKEN ? TOKEN : "secret"}`,
-  },
-});
+  return new GraphQLClient(GITHUB_API_ENDPOINT, {
+    headers,
+  });
+};

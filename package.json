@@ -10,14 +10,15 @@
     "build"
   ],
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "npm run clean:config && ts-node src/index.ts",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts init",
     "build": "tsc && mkdir -p build/templates && cp -R src/templates/config.yml build/templates/config.yml",
+    "clean:config": "rm -rf ~/.git-pulse",
     "lint": "eslint '*/**/*.{js,ts}' --quiet --fix",
-    "test": "jest --verbose",
-    "test:watch": "jest --verbose --watch",
-    "test:coverage": "jest --coverage",
-    "test:staged": "jest --findRelatedTests"
+    "test": "jest --runInBand --verbose",
+    "test:watch": "jest --runInBand --verbose --watch",
+    "test:coverage": "jest --runInBand --coverage",
+    "test:staged": "jest --runInBand --findRelatedTests"
   },
   "husky": {
     "hooks": {
@@ -48,6 +49,8 @@
   },
   "homepage": "https://github.com/jltwheeler/git-pulse#readme",
   "devDependencies": {
+    "@types/clear": "^0.1.1",
+    "@types/inquirer": "^7.3.1",
     "@types/jest": "^26.0.15",
     "@types/js-yaml": "^3.12.5",
     "@types/node": "^14.14.10",
@@ -72,10 +75,12 @@
   "dependencies": {
     "boxen": "^4.2.0",
     "chalk": "^4.1.0",
+    "clear": "^0.1.0",
     "cli-spinners": "^2.5.0",
     "cli-table3": "^0.6.0",
     "graphql": "^15.4.0",
     "graphql-request": "^3.3.0",
+    "inquirer": "^7.3.3",
     "js-yaml": "^3.14.0",
     "yargs": "^16.1.1"
   }
