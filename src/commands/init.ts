@@ -69,7 +69,7 @@ const initCommand: CommandModule = {
     try {
       const answer = await initReposQuestion();
       if (answer.addRepos) {
-        repos = await addRepoQuestions();
+        repos = await addRepoQuestions(token);
       }
     } catch (error) {
       handleError(error);
@@ -80,7 +80,7 @@ const initCommand: CommandModule = {
     try {
       const answer = await initIssuesQuestion();
       if (answer.addIssues) {
-        issues = await addIssueQuestions();
+        issues = await addIssueQuestions(token);
       }
     } catch (error) {
       handleError(error);

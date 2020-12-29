@@ -11,9 +11,19 @@ export const createRepoQuery = (
 };
 
 export const VALIDATE_REPO = gql`
-  query validateRepo {
+  query validateRepo($name: String!, $owner: String!) {
     repository(name: $name, owner: $owner) {
       url
+    }
+  }
+`;
+
+export const VALIDATE_ISSUE = gql`
+  query validateIssue($name: String!, $owner: String!, $issueNum: Int!) {
+    repository(name: $name, owner: $owner) {
+      issue(number: $issueNum) {
+        title
+      }
     }
   }
 `;

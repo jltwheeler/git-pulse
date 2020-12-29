@@ -37,3 +37,15 @@ export interface InsertIssueAnswer {
   issue: string;
   continue: true;
 }
+
+export interface TokenValidationResp {
+  rateLimit: { limit: number };
+}
+
+export interface RepoValidationResp {
+  repository: { url: string };
+}
+
+export interface IssueValidationResp {
+  repository: { issue: { title: string } };
+}

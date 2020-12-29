@@ -2,28 +2,26 @@ import inquirer from "inquirer";
 
 import { initClient } from "../client";
 import { USER_RATE_LIMIT } from "../queries";
-import { TokenAnswer } from "../types";
+import { TokenAnswer, TokenValidationResp } from "../types";
 
 export const validateToken = async (
   input: string,
 ): Promise<boolean | string> => {
   if (!input) {
-    return "Error. No token was provided";
+    throw new Error("Error. No token was provided");
   }
 
   const client = initClient(input);
   try {
-    const resp: {
-      rateLimit: { limit: number };
-    } = await client.request(USER_RATE_LIMIT);
+    const resp: TokenValidationResp = await client.request(USER_RATE_LIMIT);
     if (resp.rateLimit.limit) {
       return true;
     }
   } catch (_) {
-    return "Error. Please enter a valid authentication token.";
+    throw new Error("Error. Please enter a valid authentication token.");
   }
 
-  return "Error. Something went wrong.";
+  throw new Error("Error. Something went wrong.");
 };
 
 export const tokenQuestion = (): Promise<TokenAnswer> => {
