@@ -60,9 +60,11 @@ export const testRepos = [
   "https://github.com/docker/cli",
   "https://github.com/docker/compose",
 ];
+export const invalidRepo = "https://github.com/invalid/repourl";
 
 export const testIssues = [
   "https://github.com/CesiumGS/gltf-pipeline/issues/549",
   "https://github.com/vercel/swr/issues/781",
   "https://github.com/mui-org/material-ui/issues/16947",
 ];
+export const invalidIssue = "https://github.com/invalid/repourl/issues/100";

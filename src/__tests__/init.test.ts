@@ -74,10 +74,6 @@ describe("Initialise command", () => {
     });
   });
 
-  describe("Dummy file", () => {
-    createDummyConfig();
-  });
-
   afterEach(() => {
     mockServer.resetHandlers();
   });

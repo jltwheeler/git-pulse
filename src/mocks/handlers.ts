@@ -28,4 +28,40 @@ export const handlers = [
       }),
     );
   }),
+  graphql.query("validateRepo", (req, res, ctx) => {
+    if ("owner" in req.variables) {
+      if (req.variables.owner === "invalid") {
+        throw new Error();
+      } else {
+        return res(
+          ctx.data({
+            repository: {
+              url: "testurl",
+            },
+          }),
+        );
+      }
+    }
+
+    throw new Error();
+  }),
+  graphql.query("validateIssue", (req, res, ctx) => {
+    if ("owner" in req.variables) {
+      if (req.variables.owner === "invalid") {
+        throw new Error();
+      } else {
+        return res(
+          ctx.data({
+            repository: {
+              issue: {
+                title: "test issue",
+              },
+            },
+          }),
+        );
+      }
+    }
+
+    throw new Error();
+  }),
 ];
