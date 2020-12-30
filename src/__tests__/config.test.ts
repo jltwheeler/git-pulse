@@ -21,6 +21,8 @@ describe("Config command", () => {
       createDummyConfig();
       await asyncCommand(configCommand, ["config", "ls"]);
 
+      expect(spyConsole.mock.calls).toHaveLength(3);
+
       expect(spyConsole.mock.calls[0][0]).toContain(TOKEN);
       testIssues.forEach((item) => {
         expect(spyConsole.mock.calls[1][0]).toContain(item);
@@ -36,9 +38,29 @@ describe("Config command", () => {
         "configuration file no longer exists",
       );
     });
+
+    test("should only list repos with an -r flag", async () => {
+      createDummyConfig();
+      await asyncCommand(configCommand, ["config", "ls", "-r"]);
+
+      expect(spyConsole.mock.calls).toHaveLength(1);
+      testRepos.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+    });
+
+    test("should only list issues with an -i flag", async () => {
+      createDummyConfig();
+      await asyncCommand(configCommand, ["config", "ls", "-i"]);
+
+      expect(spyConsole.mock.calls).toHaveLength(1);
+      testIssues.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+    });
   });
 
   afterAll(() => {
-    // removeConfig();
+    removeConfig();
   });
 });

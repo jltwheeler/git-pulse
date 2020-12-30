@@ -10,7 +10,21 @@ import { Config } from "../types";
 const lsSubCommand: CommandModule = {
   command: "ls",
   describe: "Lists the current repos and issues that are being tracked.",
-  handler: () => {
+  builder: {
+    repos: {
+      alias: "r",
+      describe: "Only list repositories",
+      type: "boolean",
+      default: false,
+    },
+    issues: {
+      alias: "i",
+      describe: "Only list issues",
+      type: "boolean",
+      default: false,
+    },
+  },
+  handler: (args) => {
     try {
       checkConfigExists();
     } catch (error) {
@@ -26,15 +40,21 @@ const lsSubCommand: CommandModule = {
         config.username.authToken,
       ]),
     );
-    const issueTable = new CliTable3(generateHeader(["Num", "Issue"]));
-    const repoTable = new CliTable3(generateHeader(["Num", "Repository"]));
+    const issueTable = new CliTable3(generateHeader(["Number", "Issue"]));
+    const repoTable = new CliTable3(generateHeader(["Number", "Repository"]));
 
     config.issues.forEach((v, idx) => issueTable.push([idx + 1, v]));
     config.repos.forEach((v, idx) => repoTable.push([idx + 1, v]));
 
-    console.log(tokenTable.toString());
-    console.log(issueTable.toString());
-    console.log(repoTable.toString());
+    if (args.repos) {
+      console.log(repoTable.toString());
+    } else if (args.issues) {
+      console.log(issueTable.toString());
+    } else {
+      console.log(tokenTable.toString());
+      console.log(issueTable.toString());
+      console.log(repoTable.toString());
+    }
   },
 };
 
