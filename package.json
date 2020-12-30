@@ -10,7 +10,8 @@
     "build"
   ],
   "scripts": {
-    "start": "npm run clean:config && ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
+    "start:init": "npm run clean:config && ts-node src/index.ts",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts init",
     "post-build": "mkdir -p build/templates && cp -R src/templates/config.yml build/templates/config.yml",
     "build": "tsc --p tsconfig.build.json && npm run post-build",
