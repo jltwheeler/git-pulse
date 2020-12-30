@@ -2,11 +2,17 @@ import configCommand from "../commands/config";
 import {
   asyncCommand,
   createDummyConfig,
+  loadYamlConfig,
   removeConfig,
   testIssues,
   testRepos,
   TOKEN,
 } from "./testHelpers";
+
+import * as questionTokens from "../questions/token";
+import { Config } from "../types";
+
+jest.mock("../questions/token");
 
 const spyConsole = jest.spyOn(console, "log");
 
@@ -57,6 +63,29 @@ describe("Config command", () => {
       testIssues.forEach((item) => {
         expect(spyConsole.mock.calls[0][0]).toContain(item);
       });
+    });
+  });
+
+  describe("token sub command", () => {
+    test("should throw an error if no config file exists", async () => {
+      await asyncCommand(configCommand, ["config", "token"]);
+      expect(spyConsole.mock.calls[0][0]).toContain(
+        "configuration file no longer exists",
+      );
+    });
+
+    test("should update config file with a valid GitHub token", async () => {
+      createDummyConfig();
+      const token = "test token";
+
+      (questionTokens.tokenQuestion as jest.Mock).mockImplementationOnce(() =>
+        Promise.resolve({ token }),
+      );
+
+      await asyncCommand(configCommand, ["config", "token"]);
+
+      const config: Config = loadYamlConfig();
+      expect(config.username.authToken).toBe(token);
     });
   });
 

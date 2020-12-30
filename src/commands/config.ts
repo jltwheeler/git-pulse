@@ -1,11 +1,41 @@
+import fs from "fs";
+
 import { CommandModule } from "yargs";
 import CliTable3 from "cli-table3";
+import chalk from "chalk";
+import yaml from "js-yaml";
 
+import { tokenQuestion } from "../questions/token";
 import { checkConfigExists } from "../utils/checkConfigExists";
 import { configOutputPath } from "../utils/constants";
 import { handleError, parseConfigYaml } from "../utils/parsers";
 import { generateHeader } from "../utils/table";
 import { Config } from "../types";
+
+const tokenSubCommand: CommandModule = {
+  command: "token",
+  describe: "Update GitHub authentication token in the configuration file.",
+  handler: async () => {
+    try {
+      checkConfigExists();
+    } catch (error) {
+      handleError(error);
+      return;
+    }
+
+    try {
+      const answer = await tokenQuestion();
+      const config: Config = parseConfigYaml(configOutputPath);
+      config.username.authToken = answer.token;
+
+      await fs.promises.writeFile(configOutputPath, yaml.safeDump(config));
+      console.log(chalk.green("Success! Token has been updated."));
+      console.log(answer);
+    } catch (error) {
+      handleError(error);
+    }
+  },
+};
 
 const lsSubCommand: CommandModule = {
   command: "ls",
@@ -62,7 +92,7 @@ const configCommand: CommandModule = {
   command: "config",
   describe: "Manage git-pulse configs.",
   builder: (yargs) => {
-    return yargs.command(lsSubCommand).demandCommand();
+    return yargs.command(lsSubCommand).command(tokenSubCommand).demandCommand();
   },
   handler: () => {
     //
