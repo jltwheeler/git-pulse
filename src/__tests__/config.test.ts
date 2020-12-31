@@ -89,6 +89,68 @@ describe("Config command", () => {
     });
   });
 
+  describe("remove sub command", () => {
+    beforeEach(() => {
+      createDummyConfig();
+    });
+
+    test("should throw an error if no arguements are provided", async () => {
+      await asyncCommand(configCommand, ["config", "rm"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain(
+        "Error. Please specify a repo (-r) or issue (-i) to remove",
+      );
+    });
+
+    test("should throw an error if no value is given to the issue arg", async () => {
+      await asyncCommand(configCommand, ["config", "rm", "-i"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain(
+        "No issue number was given",
+      );
+    });
+
+    test("should throw an error if no value is given to the repo arg", async () => {
+      await asyncCommand(configCommand, ["config", "rm", "-r"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain("No repo number was given");
+    });
+
+    test("should throw an error if can't find issue number", async () => {
+      await asyncCommand(configCommand, ["config", "rm", "-i", "1000"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain(
+        "Could not find issue 1000",
+      );
+    });
+
+    test("should throw an error if can't find repo number", async () => {
+      await asyncCommand(configCommand, ["config", "rm", "-r", "2000"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain("Could not find repo 2000");
+    });
+
+    test("should correctly update config with removed issue", async () => {
+      const removedIssue = testIssues[0];
+      await asyncCommand(configCommand, ["config", "rm", "-i", "1"]);
+      const config: Config = loadYamlConfig();
+
+      expect(config.issues.length).toBe(testIssues.length - 1);
+      expect(
+        config.issues.find((item) => item === removedIssue),
+      ).toBeUndefined();
+    });
+
+    test("should correctly update config with removed repo", async () => {
+      const removedRepo = testRepos[0];
+      await asyncCommand(configCommand, ["config", "rm", "-r", "1"]);
+      const config: Config = loadYamlConfig();
+
+      expect(config.repos.length).toBe(testRepos.length - 1);
+      expect(config.repos.find((item) => item === removedRepo)).toBeUndefined();
+    });
+  });
+
   afterAll(() => {
     removeConfig();
   });
