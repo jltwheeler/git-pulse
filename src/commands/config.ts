@@ -37,6 +37,82 @@ const tokenSubCommand: CommandModule = {
   },
 };
 
+const removeSubCommand: CommandModule = {
+  command: "rm",
+  describe: "Remove a tracked repository or issue from your configuration",
+  builder: {
+    repo: {
+      alias: "r",
+      describe: "Remove a repository by a given ID number.",
+      type: "number",
+    },
+    issue: {
+      alias: "i",
+      describe: "Remove an issue by a given ID number.",
+      type: "number",
+    },
+  },
+  handler: async (args) => {
+    const config: Config = parseConfigYaml(configOutputPath);
+    let message = "";
+
+    try {
+      if ("issue" in args) {
+        if (args.issue) {
+          const issuesUpdated = config.issues.filter(
+            (_item, idx) => idx + 1 !== args.issue,
+          );
+
+          const issue = config.issues.find(
+            (_item, idx) => idx + 1 === args.issue,
+          );
+
+          if (!issue) {
+            throw new Error(
+              `Error. Could not find issue ${args.issue as number}`,
+            );
+          }
+          config.issues = issuesUpdated;
+          message = `Successfully removed issue number ${
+            args.issue as number
+          } (${issue}) `;
+        } else {
+          throw new Error("Error. No issue number was given.");
+        }
+      } else if ("repo" in args) {
+        if (args.repo) {
+          const reposUpdated = config.repos.filter(
+            (_item, idx) => idx + 1 !== args.repo,
+          );
+
+          const repo = config.repos.find((_item, idx) => idx + 1 === args.repo);
+
+          if (!repo) {
+            throw new Error(
+              `Error. Could not find repo ${args.repo as number}`,
+            );
+          }
+          config.repos = reposUpdated;
+          message = `Successfully removed repo number ${
+            args.repo as number
+          } (${repo}) `;
+        } else {
+          throw new Error("Error. No repo number was given.");
+        }
+      } else {
+        throw new Error(
+          "Error. Please specify a repo (-r) or issue (-i) to remove.",
+        );
+      }
+
+      await fs.promises.writeFile(configOutputPath, yaml.safeDump(config));
+      console.log(chalk.green(message));
+    } catch (error) {
+      handleError(error);
+    }
+  },
+};
+
 const lsSubCommand: CommandModule = {
   command: "ls",
   describe: "Lists the current repos and issues that are being tracked.",
@@ -92,7 +168,11 @@ const configCommand: CommandModule = {
   command: "config",
   describe: "Manage git-pulse configs.",
   builder: (yargs) => {
-    return yargs.command(lsSubCommand).command(tokenSubCommand).demandCommand();
+    return yargs
+      .command(lsSubCommand)
+      .command(tokenSubCommand)
+      .command(removeSubCommand)
+      .demandCommand();
   },
   handler: () => {
     //
