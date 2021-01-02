@@ -37,7 +37,6 @@ export const validateRespository = async (
         owner,
       });
       if (resp.repository.url) {
-        console.log(resp.repository.url);
         return true;
       }
     } catch {

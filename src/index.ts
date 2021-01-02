@@ -1,15 +1,21 @@
 #!/usr/bin/env node
 
 import yargs from "yargs/yargs";
-import chalk from "chalk";
+// import chalk from "chalk";
 
 import initCmd from "./commands/init";
+import configCommand from "./commands/config";
+import { getVersion } from "./utils/getVersion";
 
 yargs(process.argv.slice(2))
-  .version(process.env?.npm_package_version || "0.0.0")
-  .scriptName("git-pulse")
+  .version(getVersion())
   .usage("Usage: $0 -r string -i string")
+  .scriptName("git-pulse")
   .command(initCmd)
-  .fail((_, error) => console.log(chalk.red(error)))
+  .command(configCommand)
   .help()
+  .demandCommand()
+  .recommendCommands()
+  .strict()
+  // .fail((_, error) => console.log(chalk.red(error)))
   .parse();
