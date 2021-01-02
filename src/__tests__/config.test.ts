@@ -11,6 +11,7 @@ import {
   TOKEN,
 } from "./testHelpers";
 
+import { mockServer } from "../mocks/server";
 import * as questionTokens from "../questions/token";
 import { Config } from "../types";
 
@@ -96,6 +97,10 @@ describe("Config command", () => {
       createDummyConfig();
     });
 
+    beforeAll(() => {
+      mockServer.listen();
+    });
+
     test("should throw an error if no arguements are provided", async () => {
       await asyncCommand(configCommand, ["config", "add"]);
 
@@ -148,6 +153,10 @@ describe("Config command", () => {
       expect(config.repos.filter((item) => item === newTestRepo)).toHaveLength(
         1,
       );
+    });
+
+    afterAll(() => {
+      mockServer.close();
     });
   });
 
