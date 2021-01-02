@@ -214,6 +214,6 @@ describe("Config command", () => {
   });
 
   afterAll(() => {
-    // removeConfig();
+    removeConfig();
   });
 });
