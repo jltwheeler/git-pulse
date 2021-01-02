@@ -35,7 +35,7 @@ const initCommand: CommandModule = {
     }
 
     try {
-      if (!args.a || !args.i || !args.r) {
+      if (!args.a && !args.i && !args.r) {
         throw new Error(
           "Error. Please specify if you wish to fetch info on a repo (-r), issue (-i) or both (-a).",
         );
