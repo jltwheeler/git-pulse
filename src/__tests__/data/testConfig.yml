@@ -1,7 +1,7 @@
 issues:
   - https://github.com/CesiumGS/gltf-pipeline/issues/549
-  - https://github.com/vercel/swr/issues/781
   - https://github.com/mui-org/material-ui/issues/16947
+  - https://github.com/microsoft/terminal/issues/1375
 repos:
   - https://github.com/Microsoft/TypeScript
   - https://github.com/facebook/create-react-app

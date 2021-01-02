@@ -61,10 +61,13 @@ export const testRepos = [
   "https://github.com/docker/compose",
 ];
 export const invalidRepo = "https://github.com/invalid/repourl";
+export const newTestRepo =
+  "https://github.com/testing-library/react-testing-library";
 
 export const testIssues = [
   "https://github.com/CesiumGS/gltf-pipeline/issues/549",
-  "https://github.com/vercel/swr/issues/781",
   "https://github.com/mui-org/material-ui/issues/16947",
+  "https://github.com/microsoft/terminal/issues/1375",
 ];
 export const invalidIssue = "https://github.com/invalid/repourl/issues/100";
+export const newTestIssue = "https://github.com/vercel/swr/issues/781";
