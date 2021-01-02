@@ -66,12 +66,10 @@ const addSubCommand: CommandModule = {
           if (config.issues.find((v) => v === url)) {
             throw new Error(`Error. ${url} is already being tracked.`);
           }
-          const result = await validateIssue(url);
+          await validateIssue(url);
 
-          if (result) {
-            config.issues = config.issues.concat(url);
-            message = `Successfully added ${url} to the tracked issues list.`;
-          }
+          config.issues = config.issues.concat(url);
+          message = `Successfully added ${url} to the tracked issues list.`;
         } else {
           throw new Error("Error. No issue URL was provided.");
         }
@@ -82,12 +80,10 @@ const addSubCommand: CommandModule = {
           if (config.repos.find((v) => v === url)) {
             throw new Error(`Error. ${url} is already being tracked.`);
           }
-          const result = await validateRespository(url);
+          await validateRespository(url);
 
-          if (result) {
-            config.repos = config.repos.concat(url);
-            message = `Successfully added ${url} to the tracked repos list.`;
-          }
+          config.repos = config.repos.concat(url);
+          message = `Successfully added ${url} to the tracked repos list.`;
         } else {
           throw new Error("Error. No repo URL was provided.");
         }
