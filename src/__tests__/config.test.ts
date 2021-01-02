@@ -3,6 +3,8 @@ import {
   asyncCommand,
   createDummyConfig,
   loadYamlConfig,
+  newTestIssue,
+  newTestRepo,
   removeConfig,
   testIssues,
   testRepos,
@@ -89,6 +91,66 @@ describe("Config command", () => {
     });
   });
 
+  describe("add sub command", () => {
+    beforeEach(() => {
+      createDummyConfig();
+    });
+
+    test("should throw an error if no arguements are provided", async () => {
+      await asyncCommand(configCommand, ["config", "add"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain(
+        "Error. Please specify a repo (-r) or issue (-i) to add",
+      );
+    });
+
+    test("should throw an error if no value is given to the issue arg", async () => {
+      await asyncCommand(configCommand, ["config", "add", "-i"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain(
+        "No issue URL was provided",
+      );
+    });
+
+    test("should throw an error if no value is given to the repo arg", async () => {
+      await asyncCommand(configCommand, ["config", "add", "-r"]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain("No repo URL was provided");
+    });
+
+    test("should throw an error if duplicate value is given to the issue arg", async () => {
+      await asyncCommand(configCommand, ["config", "add", "-i", testIssues[0]]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain("already being tracked");
+    });
+
+    test("should throw an error if duplicate value is given to the repo arg", async () => {
+      await asyncCommand(configCommand, ["config", "add", "-r", testRepos[0]]);
+
+      expect(spyConsole.mock.calls[0][0]).toContain("already being tracked");
+    });
+
+    test("should correctly update config with added issue", async () => {
+      await asyncCommand(configCommand, ["config", "add", "-i", newTestIssue]);
+      const config: Config = loadYamlConfig();
+
+      expect(config.issues.length).toBe(testIssues.length + 1);
+      expect(
+        config.issues.filter((item) => item === newTestIssue),
+      ).toHaveLength(1);
+    });
+
+    test("should correctly update config with added repo", async () => {
+      await asyncCommand(configCommand, ["config", "add", "-r", newTestRepo]);
+      const config: Config = loadYamlConfig();
+
+      expect(config.repos.length).toBe(testRepos.length + 1);
+      expect(config.repos.filter((item) => item === newTestRepo)).toHaveLength(
+        1,
+      );
+    });
+  });
+
   describe("remove sub command", () => {
     beforeEach(() => {
       createDummyConfig();
@@ -152,6 +214,6 @@ describe("Config command", () => {
   });
 
   afterAll(() => {
-    removeConfig();
+    // removeConfig();
   });
 });

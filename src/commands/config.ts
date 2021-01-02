@@ -6,6 +6,8 @@ import chalk from "chalk";
 import yaml from "js-yaml";
 
 import { tokenQuestion } from "../questions/token";
+import { validateRespository } from "../questions/repos";
+import { validateIssue } from "../questions/issues";
 import { checkConfigExists } from "../utils/checkConfigExists";
 import { configOutputPath } from "../utils/constants";
 import { handleError, parseConfigYaml } from "../utils/parsers";
@@ -31,6 +33,68 @@ const tokenSubCommand: CommandModule = {
       await fs.promises.writeFile(configOutputPath, yaml.safeDump(config));
       console.log(chalk.green("Success! Token has been updated."));
       console.log(answer);
+    } catch (error) {
+      handleError(error);
+    }
+  },
+};
+
+const addSubCommand: CommandModule = {
+  command: "add",
+  describe: "Add a repository or issue to your configuration to track.",
+  builder: {
+    repo: {
+      alias: "r",
+      describe: "Add a repository by passing in the full repository URL",
+      type: "string",
+    },
+    issue: {
+      alias: "i",
+      describe: "Add an issue by passing in the full issue URL",
+      type: "string",
+    },
+  },
+  handler: async (args) => {
+    const config: Config = parseConfigYaml(configOutputPath);
+    let message = "";
+
+    try {
+      if ("issue" in args) {
+        if (args.issue) {
+          const url = args.issue as string;
+
+          if (config.issues.find((v) => v === url)) {
+            throw new Error(`Error. ${url} is already being tracked.`);
+          }
+          await validateIssue(url);
+
+          config.issues = config.issues.concat(url);
+          message = `Successfully added ${url} to the tracked issues list.`;
+        } else {
+          throw new Error("Error. No issue URL was provided.");
+        }
+      } else if ("repo" in args) {
+        if (args.repo) {
+          const url = args.repo as string;
+
+          if (config.repos.find((v) => v === url)) {
+            throw new Error(`Error. ${url} is already being tracked.`);
+          }
+          await validateRespository(url);
+
+          config.repos = config.repos.concat(url);
+          message = `Successfully added ${url} to the tracked repos list.`;
+        } else {
+          throw new Error("Error. No repo URL was provided.");
+        }
+      } else {
+        throw new Error(
+          "Error. Please specify a repo (-r) or issue (-i) to add.",
+        );
+      }
+
+      await fs.promises.writeFile(configOutputPath, yaml.safeDump(config));
+      console.log(chalk.green(message));
     } catch (error) {
       handleError(error);
     }
@@ -171,6 +235,7 @@ const configCommand: CommandModule = {
     return yargs
       .command(lsSubCommand)
       .command(tokenSubCommand)
+      .command(addSubCommand)
       .command(removeSubCommand)
       .demandCommand();
   },
