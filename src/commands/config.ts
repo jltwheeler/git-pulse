@@ -6,8 +6,8 @@ import chalk from "chalk";
 import yaml from "js-yaml";
 
 import { tokenQuestion } from "../questions/token";
-import { validateRespository } from "../questions/repos";
-import { validateIssue } from "../questions/issues";
+// import { validateRespository } from "../questions/repos";
+// import { validateIssue } from "../questions/issues";
 import { checkConfigExists } from "../utils/checkConfigExists";
 import { configOutputPath } from "../utils/constants";
 import { handleError, parseConfigYaml } from "../utils/parsers";
@@ -66,7 +66,7 @@ const addSubCommand: CommandModule = {
           if (config.issues.find((v) => v === url)) {
             throw new Error(`Error. ${url} is already being tracked.`);
           }
-          await validateIssue(url);
+          // await validateIssue(url);
 
           config.issues = config.issues.concat(url);
           message = `Successfully added ${url} to the tracked issues list.`;
@@ -80,7 +80,7 @@ const addSubCommand: CommandModule = {
           if (config.repos.find((v) => v === url)) {
             throw new Error(`Error. ${url} is already being tracked.`);
           }
-          await validateRespository(url);
+          // await validateRespository(url);
 
           config.repos = config.repos.concat(url);
           message = `Successfully added ${url} to the tracked repos list.`;
