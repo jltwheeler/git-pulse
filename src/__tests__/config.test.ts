@@ -134,7 +134,7 @@ describe("Config command", () => {
       await asyncCommand(configCommand, ["config", "add", "-i", newTestIssue]);
       const config: Config = loadYamlConfig();
 
-      expect(config.issues.length).toBe(testIssues.length + 1);
+      expect(config.issues).toHaveLength(testIssues.length + 1);
       expect(
         config.issues.filter((item) => item === newTestIssue),
       ).toHaveLength(1);
@@ -144,7 +144,7 @@ describe("Config command", () => {
       await asyncCommand(configCommand, ["config", "add", "-r", newTestRepo]);
       const config: Config = loadYamlConfig();
 
-      expect(config.repos.length).toBe(testRepos.length + 1);
+      expect(config.repos).toHaveLength(testRepos.length + 1);
       expect(config.repos.filter((item) => item === newTestRepo)).toHaveLength(
         1,
       );
