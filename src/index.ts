@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import yargs from "yargs/yargs";
-// import chalk from "chalk";
 
 import initCmd from "./commands/init";
 import configCommand from "./commands/config";
