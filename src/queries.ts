@@ -27,31 +27,6 @@ export const USER_RATE_LIMIT = gql`
   }
 `;
 
-export const FETCH_ISSUE = gql`
-  query fetchIssue($name: String!, $owner: String!, $issueNum: Int!) {
-    repository(name: $name, owner: $owner) {
-      issue(number: $issueNum) {
-        title
-        closedAt
-        createdAt
-        lastEditedAt
-        reactions {
-          totalCount
-        }
-        state
-        comments(last: 5) {
-          nodes {
-            createdAt
-            bodyText
-          }
-          totalCount
-        }
-      }
-      url
-    }
-  }
-`;
-
 export const generateFetchReposQuery = (repos: string[]): string => {
   const queries = repos.map((repo, idx) => {
     const result = repoRegex.exec(repo);
@@ -97,6 +72,50 @@ export const generateFetchReposQuery = (repos: string[]): string => {
 
   const query = gql`
     query fetchRepos {
+      ${queries.join("\n")}
+    }
+  `;
+
+  return query;
+};
+
+export const generateFetchIssuesQuery = (issues: string[]): string => {
+  const queries = issues.map((issue, idx) => {
+    const result = repoRegex.exec(issue);
+    if (result) {
+      const [owner, name, , issueNum] = result[0].split("/");
+      return `
+        fetchRepo${idx}: repository(name: "${name}", owner: "${owner}") {
+          name
+          owner {
+            login
+          }
+          issue(number: ${issueNum}) {
+            title
+            closedAt
+            createdAt
+            lastEditedAt
+            reactions {
+              totalCount
+            }
+            state
+            comments(last: 1) {
+              nodes {
+                createdAt
+                bodyText
+              }
+              totalCount
+            }
+            url
+          }
+        }
+        `;
+    }
+    return "";
+  });
+
+  const query = gql`
+    query fetchIssues {
       ${queries.join("\n")}
     }
   `;

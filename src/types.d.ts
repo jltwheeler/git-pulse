@@ -84,3 +84,28 @@ export interface RepoFetchResp {
   stargazerCount: number;
   url: string;
 }
+
+interface CommentNode {
+  createdAt: string;
+  bodyText: string;
+}
+
+export interface IssueFetchResp {
+  name: string;
+  owner: { login: string };
+  issue: {
+    title: string;
+    closedAt: string;
+    createdAt: string;
+    lastEditedAt: string;
+    reactions: {
+      totalCount: number;
+    };
+    state: "OPEN" | "CLOSED";
+    comments: {
+      nodes: CommentNode[];
+      totalCount: number;
+    };
+    url: string;
+  };
+}
