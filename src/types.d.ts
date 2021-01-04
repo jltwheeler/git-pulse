@@ -95,7 +95,7 @@ export interface IssueFetchResp {
   owner: { login: string };
   issue: {
     title: string;
-    closedAt: string;
+    closedAt: string | null;
     createdAt: string;
     lastEditedAt: string;
     reactions: {

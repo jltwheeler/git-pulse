@@ -11,10 +11,10 @@ import { generateFetchIssuesQuery, generateFetchReposQuery } from "../queries";
 import CliTable3 from "cli-table3";
 import { generateHeader } from "../utils/table";
 
-interface RepoResult {
+export interface RepoResult {
   [key: string]: RepoFetchResp;
 }
-interface IssueResult {
+export interface IssueResult {
   [key: string]: IssueFetchResp;
 }
 
@@ -27,6 +27,7 @@ export const generateRepoTableData = (result: RepoResult): Array<string>[] => {
       `${chalk.yellow("★")}: ${repoObj.stargazerCount}`,
       `${chalk.yellow("Open PR's")}: ${repoObj.pullRequests.totalCount}`,
       `${chalk.yellow("Forks")}: ${repoObj.forkCount}`,
+      `${chalk.yellow("Open Issues")}: ${repoObj.issues.totalCount}`,
     ].join("\n");
 
     if (repoObj.releases.edges.length > 0) {
@@ -50,7 +51,7 @@ export const generateRepoTableData = (result: RepoResult): Array<string>[] => {
 
 export const generateIssueTableData = (
   result: IssueResult,
-): Array<string | number>[] => {
+): Array<string>[] => {
   return Object.keys(result).map((v) => {
     const issueObj = result[v];
     const name = chalk.bold(`${issueObj.owner.login} / ${issueObj.name}`);
@@ -127,9 +128,9 @@ export const displayIssueTable = (result: IssueResult): void => {
   console.log(table.toString());
 };
 
-const fetchCommand: CommandModule = {
-  command: "fetch",
-  describe: "Fetches information about tracked repos and / or issues.",
+const checkCommand: CommandModule = {
+  command: "check",
+  describe: "Checks information about tracked repos and / or issues.",
   builder: {
     repo: {
       alias: "r",
@@ -178,7 +179,7 @@ const fetchCommand: CommandModule = {
         displayIssueTable(issueResult);
       } else {
         throw new Error(
-          "Error. Please specify if you wish to fetch info on a repo (-r), issue (-i) or both (-a).",
+          "Error. Please specify if you wish to check info on a repo (-r), issue (-i) or both (-a).",
         );
       }
     } catch (error) {
@@ -187,4 +188,4 @@ const fetchCommand: CommandModule = {
   },
 };
 
-export default fetchCommand;
+export default checkCommand;

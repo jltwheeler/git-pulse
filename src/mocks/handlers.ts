@@ -1,4 +1,5 @@
 import { graphql } from "msw";
+import { fetchIssuesResult, fetchReposResult } from "../__tests__/testHelpers";
 
 export const handlers = [
   graphql.query("userAuth", (req, res, ctx) => {
@@ -63,5 +64,11 @@ export const handlers = [
     }
 
     throw new Error();
+  }),
+  graphql.query("fetchRepos", (_req, res, ctx) => {
+    return res(ctx.data(fetchReposResult));
+  }),
+  graphql.query("fetchIssues", (_req, res, ctx) => {
+    return res(ctx.data(fetchIssuesResult));
   }),
 ];
