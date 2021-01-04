@@ -6,6 +6,7 @@ import yaml from "js-yaml";
 import chalk from "chalk";
 
 import { Config } from "../types";
+import { dateRegex } from "./constants";
 
 export const isObject = (object: any): object is Config => {
   return typeof object === "object";
@@ -38,4 +39,17 @@ export const handleError = (error: any) => {
   if (error instanceof Error) {
     console.log(chalk.red(error.message));
   }
+};
+
+export const parseYYYYMMDD = (input: string): string => {
+  let date = "";
+
+  const regResult = dateRegex.exec(input);
+  if (regResult) {
+    date = regResult[0];
+  } else {
+    date = input;
+  }
+
+  return date;
 };
