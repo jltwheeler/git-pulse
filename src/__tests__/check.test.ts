@@ -1,4 +1,4 @@
-import fetchCommand from "../commands/fetch";
+import checkCommand from "../commands/check";
 import { asyncCommand, createDummyConfig, removeConfig } from "./testHelpers";
 import { mockServer } from "../mocks/server";
 
@@ -16,7 +16,7 @@ describe("Fetch command", () => {
 
   describe("Run without existing config file", () => {
     test("should throw error and notify user of the error.", async () => {
-      await asyncCommand(fetchCommand, ["fetch"]);
+      await asyncCommand(checkCommand, ["fetch"]);
 
       expect(spyConsole.mock.calls[0][0]).toContain(
         "configuration file no longer exists",
@@ -27,7 +27,7 @@ describe("Fetch command", () => {
   describe("Run without args", () => {
     test("should throw error and notify user of the error.", async () => {
       createDummyConfig();
-      await asyncCommand(fetchCommand, ["fetch"]);
+      await asyncCommand(checkCommand, ["fetch"]);
 
       expect(spyConsole.mock.calls[0][0]).toContain(
         "specify if you wish to fetch info on a",

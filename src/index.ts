@@ -4,7 +4,7 @@ import yargs from "yargs/yargs";
 
 import initCmd from "./commands/init";
 import configCommand from "./commands/config";
-import fetchCommand from "./commands/fetch";
+import checkCommand from "./commands/check";
 import { getVersion } from "./utils/getVersion";
 
 yargs(process.argv.slice(2))
@@ -13,7 +13,7 @@ yargs(process.argv.slice(2))
   .scriptName("git-pulse")
   .command(initCmd)
   .command(configCommand)
-  .command(fetchCommand)
+  .command(checkCommand)
   .help()
   .demandCommand()
   .recommendCommands()
