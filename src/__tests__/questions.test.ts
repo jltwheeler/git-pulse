@@ -1,4 +1,4 @@
-import oraMock from "../mocks/oraMock";
+import oraMock from "../mocks/ora";
 import { mockServer } from "../mocks/server";
 import { invalidRepo, testIssues, testRepos, TOKEN } from "./testHelpers";
 import { validateToken } from "../questions/token";

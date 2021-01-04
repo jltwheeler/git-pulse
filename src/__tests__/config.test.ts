@@ -1,4 +1,4 @@
-import oraMock from "../mocks/oraMock";
+import oraMock from "../mocks/ora";
 import configCommand from "../commands/config";
 import {
   asyncCommand,

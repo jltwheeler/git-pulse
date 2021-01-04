@@ -1,4 +1,5 @@
-import oraMock from "../mocks/oraMock";
+import oraMock from "../mocks/ora";
+import terminalLinkMock from "../mocks/terminalLink";
 import checkCommand, {
   generateIssueTableData,
   generateRepoTableData,
@@ -19,9 +20,7 @@ import { mockServer } from "../mocks/server";
 import stripAnsi from "strip-ansi";
 
 jest.mock("ora", () => oraMock);
-jest.mock("terminal-link", () => {
-  return jest.fn().mockImplementation((text: string, _url: string) => text);
-});
+jest.mock("terminal-link", () => terminalLinkMock);
 const spyConsole = jest.spyOn(console, "log");
 
 describe("Fetch command", () => {
