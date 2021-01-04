@@ -1,5 +1,5 @@
+import chalk from "chalk";
 import inquirer from "inquirer";
-import ora from "ora";
 
 import { initClient } from "../client";
 import { VALIDATE_REPO } from "../queries";
@@ -8,8 +8,7 @@ import {
   InsertRepoAnswer,
   RepoValidationResp,
 } from "../types";
-import { repoRegex, SLEEP_TIME } from "../utils/constants";
-import { sleep } from "../utils/sleep";
+import { repoRegex } from "../utils/constants";
 
 let TOKEN = "";
 
@@ -34,14 +33,10 @@ export const validateRespository = async (
     const [owner, name] = result[0].split("/");
 
     try {
-      const spinner = ora("Validating repo...").start();
       const resp: RepoValidationResp = await client.request(VALIDATE_REPO, {
         name,
         owner,
       });
-
-      await sleep(SLEEP_TIME);
-      spinner.stop();
 
       if (resp.repository.url) {
         return true;
@@ -68,6 +63,7 @@ const insertRepoQuestion = (): Promise<InsertRepoAnswer> => {
       type: "confirm",
       name: "continue",
       message: "Would you like to add another repository?",
+      prefix: chalk.green("Repository added!"),
     },
   ]);
 };

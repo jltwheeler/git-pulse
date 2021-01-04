@@ -4,6 +4,7 @@ import path from "path";
 import { CommandModule } from "yargs";
 import chalk from "chalk";
 import yaml from "js-yaml";
+import figlet from "figlet";
 
 import { safeClear } from "../utils/safeClear";
 import { tokenQuestion } from "../questions/token";
@@ -48,6 +49,8 @@ const initCommand: CommandModule = {
     let repos: string[] = [];
     let issues: string[] = [];
 
+    safeClear();
+
     if (fs.existsSync(configDir)) {
       return Promise.reject(
         new Error(
@@ -55,6 +58,23 @@ const initCommand: CommandModule = {
         ),
       );
     }
+
+    console.log(
+      chalk.blueBright(
+        figlet.textSync("Git Pulse", {
+          horizontalLayout: "default",
+          font: "Small",
+        }),
+      ),
+    );
+
+    console.log(
+      `This is the ${chalk.blueBright.bold(
+        "git-pulse configuration wizard",
+      )}, which will help you generate a configuration file. It will ask you a few questions and configure your ${chalk.blueBright.bold(
+        ".git-pulse conf file",
+      )}.\n`,
+    );
 
     try {
       const answer = await tokenQuestion();
@@ -64,10 +84,9 @@ const initCommand: CommandModule = {
       handleError(error);
     }
 
-    safeClear();
-
     try {
       const answer = await initReposQuestion();
+      safeClear();
       if (answer.addRepos) {
         repos = await addRepoQuestions(token);
       }
@@ -75,10 +94,9 @@ const initCommand: CommandModule = {
       handleError(error);
     }
 
-    safeClear();
-
     try {
       const answer = await initIssuesQuestion();
+      safeClear();
       if (answer.addIssues) {
         issues = await addIssueQuestions(token);
       }
