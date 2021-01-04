@@ -1,8 +1,11 @@
-import { validateToken } from "../questions/token";
+import oraMock from "../mocks/ora";
 import { mockServer } from "../mocks/server";
 import { invalidRepo, testIssues, testRepos, TOKEN } from "./testHelpers";
+import { validateToken } from "../questions/token";
 import { validateRespository } from "../questions/repos";
 import { validateIssue } from "../questions/issues";
+
+jest.mock("ora", () => oraMock);
 
 describe("Token questions", () => {
   beforeAll(() => {

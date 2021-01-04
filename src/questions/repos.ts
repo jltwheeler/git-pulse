@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import inquirer from "inquirer";
 
 import { initClient } from "../client";
@@ -36,6 +37,7 @@ export const validateRespository = async (
         name,
         owner,
       });
+
       if (resp.repository.url) {
         return true;
       }
@@ -61,6 +63,7 @@ const insertRepoQuestion = (): Promise<InsertRepoAnswer> => {
       type: "confirm",
       name: "continue",
       message: "Would you like to add another repository?",
+      prefix: chalk.green("Repository added!"),
     },
   ]);
 };

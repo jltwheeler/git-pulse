@@ -1,21 +1,23 @@
+import chalk from "chalk";
+import figlet from "figlet";
+import yaml from "js-yaml";
+import { CommandModule } from "yargs";
+
 import fs from "fs";
 import path from "path";
 
-import { CommandModule } from "yargs";
-import chalk from "chalk";
-import yaml from "js-yaml";
-
-import { safeClear } from "../utils/safeClear";
-import { tokenQuestion } from "../questions/token";
-import { addIssueQuestions, initIssuesQuestion } from "../questions/issues";
-import { initReposQuestion, addRepoQuestions } from "../questions/repos";
 import {
-  configOutputPath,
-  configDir,
-  configTemplateName,
-} from "../utils/constants";
-import { isStringArray, parseConfigYaml, handleError } from "../utils/parsers";
+  tokenQuestion,
+  addRepoQuestions,
+  addIssueQuestions,
+  initReposQuestion,
+  initIssuesQuestion,
+} from "../questions";
 import { Config, InitObject } from "../types";
+import { safeClear, constants, parsers } from "../utils";
+
+const { configOutputPath, configDir, configTemplateName } = constants;
+const { isStringArray, parseConfigYaml, handleError } = parsers;
 
 const generateConfigFile = async (
   configDir: string,
@@ -48,6 +50,8 @@ const initCommand: CommandModule = {
     let repos: string[] = [];
     let issues: string[] = [];
 
+    safeClear();
+
     if (fs.existsSync(configDir)) {
       return Promise.reject(
         new Error(
@@ -55,6 +59,23 @@ const initCommand: CommandModule = {
         ),
       );
     }
+
+    console.log(
+      chalk.blueBright(
+        figlet.textSync("Git Pulse", {
+          horizontalLayout: "default",
+          font: "Small",
+        }),
+      ),
+    );
+
+    console.log(
+      `This is the ${chalk.blueBright.bold(
+        "git-pulse configuration wizard",
+      )}, which will help you generate a configuration file. It will ask you a few questions and configure your ${chalk.blueBright.bold(
+        ".git-pulse conf file",
+      )}.\n`,
+    );
 
     try {
       const answer = await tokenQuestion();
@@ -64,10 +85,9 @@ const initCommand: CommandModule = {
       handleError(error);
     }
 
-    safeClear();
-
     try {
       const answer = await initReposQuestion();
+      safeClear();
       if (answer.addRepos) {
         repos = await addRepoQuestions(token);
       }
@@ -75,10 +95,9 @@ const initCommand: CommandModule = {
       handleError(error);
     }
 
-    safeClear();
-
     try {
       const answer = await initIssuesQuestion();
+      safeClear();
       if (answer.addIssues) {
         issues = await addIssueQuestions(token);
       }

@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 
-import { initClient } from "../client";
 import { mockServer } from "../mocks/server";
+import { initClient } from "../client";
 import { createDummyConfig, loadYamlConfig, removeConfig } from "./testHelpers";
 
 const testQuery = gql`

@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import inquirer from "inquirer";
 
 import { initClient } from "../client";
@@ -37,6 +38,7 @@ export const validateIssue = async (
         owner,
         issueNum: parseInt(issueNum),
       });
+
       if (resp.repository.issue.title) {
         return true;
       }
@@ -61,6 +63,7 @@ const insertIssueQuestion = (): Promise<InsertIssueAnswer> => {
       type: "confirm",
       name: "continue",
       message: "Would you like to add another issue?",
+      prefix: chalk.green("Issue added!"),
     },
   ]);
 };

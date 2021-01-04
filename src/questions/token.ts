@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import inquirer from "inquirer";
 
 import { initClient } from "../client";
@@ -12,8 +13,10 @@ export const validateToken = async (
   }
 
   const client = initClient(input);
+
   try {
     const resp: TokenValidationResp = await client.request(USER_RATE_LIMIT);
+
     if (resp.rateLimit.limit) {
       return true;
     }
@@ -29,7 +32,9 @@ export const tokenQuestion = (): Promise<TokenAnswer> => {
     {
       type: "string",
       name: "token",
-      message: "Please enter your GitHub user authentication token: ",
+      message: `Please enter your ${chalk.blueBright(
+        "GitHub user authentication token",
+      )}: `,
       validate: validateToken,
     },
   ]);
