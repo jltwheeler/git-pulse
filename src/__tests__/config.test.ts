@@ -1,3 +1,4 @@
+import oraMock from "../mocks/oraMock";
 import configCommand from "../commands/config";
 import {
   asyncCommand,
@@ -15,6 +16,7 @@ import { mockServer } from "../mocks/server";
 import * as questionTokens from "../questions/token";
 import { Config } from "../types";
 
+jest.mock("ora", () => oraMock);
 jest.mock("../questions/token");
 
 const spyConsole = jest.spyOn(console, "log");

@@ -1,3 +1,4 @@
+import oraMock from "../mocks/oraMock";
 import checkCommand, {
   generateIssueTableData,
   generateRepoTableData,
@@ -19,6 +20,7 @@ import stripAnsi from "strip-ansi";
 import terminalLink from "terminal-link";
 import chalk from "chalk";
 
+jest.mock("ora", () => oraMock);
 const spyConsole = jest.spyOn(console, "log");
 
 describe("Fetch command", () => {
