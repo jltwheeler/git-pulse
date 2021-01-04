@@ -17,10 +17,11 @@ import {
 } from "./testHelpers";
 import { mockServer } from "../mocks/server";
 import stripAnsi from "strip-ansi";
-import terminalLink from "terminal-link";
-import chalk from "chalk";
 
 jest.mock("ora", () => oraMock);
+jest.mock("terminal-link", () => {
+  return jest.fn().mockImplementation((text: string, _url: string) => text);
+});
 const spyConsole = jest.spyOn(console, "log");
 
 describe("Fetch command", () => {
@@ -54,30 +55,19 @@ describe("Fetch command", () => {
     });
   });
 
-  describe("Generate repo table data", () => {
+  describe.only("Generate repo table data", () => {
     test("should return correct values array", () => {
       const input: RepoResult = fetchReposResult;
 
       const result = generateRepoTableData(input);
-      const output = result.map((row) =>
-        row.map((v) => {
-          if (!v.includes("Link")) {
-            return stripAnsi(v);
-          }
+      const output = result.map((row) => row.map((v) => stripAnsi(v)));
 
-          return v;
-        }),
-      );
-
-      const link = chalk.blueBright(
-        terminalLink("Link to v4.1.3", "http://example.com"),
-      );
       const expected = [
         [
           "microsoft/TypeScript\n★: 67433\nOpen PR's: 263\nForks: 8944\nOpen Issues: 4700",
           "v4.1.3",
           "2020-12-16",
-          `test release\n-----------------------\n${link}`,
+          "test release\n-----------------------\nLink to v4.1.3",
         ],
         [
           "microsoft/test\n★: 1\nOpen PR's: 500\nForks: 100\nOpen Issues: 2000",
@@ -95,24 +85,12 @@ describe("Fetch command", () => {
       const input: IssueResult = fetchIssuesResult;
 
       const result = generateIssueTableData(input);
-      const output = result.map((row) =>
-        row.map((v) => {
-          if (!v.includes("Link")) {
-            return stripAnsi(v);
-          }
-
-          return v;
-        }),
-      );
-
-      const link = chalk.blueBright(
-        terminalLink("Link to issue", "http://example.com"),
-      );
+      const output = result.map((row) => row.map((v) => stripAnsi(v)));
 
       const expected = [
         [
           "CesiumGS / gltf-pipeline",
-          `Title X\n-------------\n${link}`,
+          "Title X\n-------------\nLink to isse",
           "OPEN",
           "2020-07-08",
           "2020-07-08",
