@@ -54,7 +54,7 @@ describe("Fetch command", () => {
     });
   });
 
-  describe.only("Generate repo table data", () => {
+  describe("Generate repo table data", () => {
     test("should return correct values array", () => {
       const input: RepoResult = fetchReposResult;
 
@@ -89,7 +89,7 @@ describe("Fetch command", () => {
       const expected = [
         [
           "CesiumGS / gltf-pipeline",
-          "Title X\n-------------\nLink to isse",
+          "Title X\n-------------\nLink to issue",
           "OPEN",
           "2020-07-08",
           "2020-07-08",
