@@ -2,7 +2,7 @@ import { CommandModule } from "yargs";
 import chalk from "chalk";
 import terminalLink from "terminal-link";
 
-import { configOutputPath } from "../utils/constants";
+import { configOutputPath, SLEEP_TIME } from "../utils/constants";
 import { Config, IssueFetchResp, RepoFetchResp } from "../types";
 import { checkConfigExists } from "../utils/checkConfigExists";
 import { handleError, parseConfigYaml, parseYYYYMMDD } from "../utils/parsers";
@@ -10,6 +10,8 @@ import { initClient } from "../client";
 import { generateFetchIssuesQuery, generateFetchReposQuery } from "../queries";
 import CliTable3 from "cli-table3";
 import { generateHeader } from "../utils/table";
+import ora from "ora";
+import { sleep } from "../utils/sleep";
 
 export interface RepoResult {
   [key: string]: RepoFetchResp;
@@ -161,19 +163,35 @@ const checkCommand: CommandModule = {
       const client = initClient();
 
       if (args.r) {
+        const spinner = ora("Fetching repository information").start();
         const query = generateFetchReposQuery(config.repos);
         const result: RepoResult = await client.request(query);
+
+        await sleep(SLEEP_TIME);
+        spinner.stop();
+
         displayRepoTable(result);
       } else if (args.i) {
+        const spinner = ora("Fetching issue information").start();
         const query = generateFetchIssuesQuery(config.issues);
         const result: IssueResult = await client.request(query);
+
+        await sleep(SLEEP_TIME);
+        spinner.stop();
+
         displayIssueTable(result);
       } else if (args.a) {
+        const spinner = ora(
+          "Fetching repository and issue information",
+        ).start();
         const repoQuery = generateFetchReposQuery(config.repos);
         const repoResult: RepoResult = await client.request(repoQuery);
 
         const issueQuery = generateFetchIssuesQuery(config.issues);
         const issueResult: IssueResult = await client.request(issueQuery);
+
+        await sleep(SLEEP_TIME);
+        spinner.stop();
 
         displayRepoTable(repoResult);
         displayIssueTable(issueResult);

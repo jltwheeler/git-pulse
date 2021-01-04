@@ -1,4 +1,5 @@
 import inquirer from "inquirer";
+import ora from "ora";
 
 import { initClient } from "../client";
 import { VALIDATE_ISSUE } from "../queries";
@@ -7,7 +8,8 @@ import {
   InsertIssueAnswer,
   IssueValidationResp,
 } from "../types";
-import { repoRegex } from "../utils/constants";
+import { repoRegex, SLEEP_TIME } from "../utils/constants";
+import { sleep } from "../utils/sleep";
 
 let TOKEN = "";
 
@@ -32,11 +34,16 @@ export const validateIssue = async (
     const [owner, name, , issueNum] = result[0].split("/");
 
     try {
+      const spinner = ora("Validating issue...").start();
       const resp: IssueValidationResp = await client.request(VALIDATE_ISSUE, {
         name,
         owner,
         issueNum: parseInt(issueNum),
       });
+
+      await sleep(SLEEP_TIME);
+      spinner.stop();
+
       if (resp.repository.issue.title) {
         return true;
       }
