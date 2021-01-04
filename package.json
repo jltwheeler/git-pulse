@@ -1,6 +1,6 @@
 {
   "name": "git-pulse",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "CLI tool to display concise information from github repos you follow",
   "main": "./build/index.js",
   "bin": {
