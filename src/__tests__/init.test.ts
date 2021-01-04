@@ -1,3 +1,4 @@
+import { mockServer } from "../mocks/server";
 import {
   asyncCommand,
   createDummyConfig,
@@ -9,7 +10,6 @@ import {
 } from "./testHelpers";
 import { Config } from "../types";
 import init from "../commands/init";
-import { mockServer } from "../mocks/server";
 import * as questionIssues from "../questions/issues";
 import * as questionRepos from "../questions/repos";
 

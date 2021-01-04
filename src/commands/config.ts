@@ -1,18 +1,25 @@
+import chalk from "chalk";
+import CliTable3 from "cli-table3";
+import yaml from "js-yaml";
+import { CommandModule } from "yargs";
+
 import fs from "fs";
 
-import { CommandModule } from "yargs";
-import CliTable3 from "cli-table3";
-import chalk from "chalk";
-import yaml from "js-yaml";
-
-import { tokenQuestion } from "../questions/token";
-import { validateRespository } from "../questions/repos";
-import { validateIssue } from "../questions/issues";
-import { checkConfigExists } from "../utils/checkConfigExists";
-import { configOutputPath } from "../utils/constants";
-import { handleError, parseConfigYaml } from "../utils/parsers";
-import { generateHeader } from "../utils/table";
+import {
+  tokenQuestion,
+  validateRespository,
+  validateIssue,
+} from "../questions";
 import { Config } from "../types";
+import {
+  checkConfigExists,
+  constants,
+  parsers,
+  generateHeader,
+} from "../utils";
+
+const { configOutputPath } = constants;
+const { handleError, parseConfigYaml } = parsers;
 
 const tokenSubCommand: CommandModule = {
   command: "token",

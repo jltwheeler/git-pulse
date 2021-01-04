@@ -1,5 +1,9 @@
+import stripAnsi from "strip-ansi";
+
 import oraMock from "../mocks/ora";
 import terminalLinkMock from "../mocks/terminalLink";
+import { mockServer } from "../mocks/server";
+
 import checkCommand, {
   generateIssueTableData,
   generateRepoTableData,
@@ -16,8 +20,6 @@ import {
   repoTableValsEmpty,
   repoTableValsFull,
 } from "./testHelpers";
-import { mockServer } from "../mocks/server";
-import stripAnsi from "strip-ansi";
 
 jest.mock("ora", () => oraMock);
 jest.mock("terminal-link", () => terminalLinkMock);

@@ -1,17 +1,22 @@
-import { CommandModule } from "yargs";
 import chalk from "chalk";
+import CliTable3 from "cli-table3";
+import ora from "ora";
 import terminalLink from "terminal-link";
+import { CommandModule } from "yargs";
 
-import { configOutputPath, SLEEP_TIME } from "../utils/constants";
-import { Config, IssueFetchResp, RepoFetchResp } from "../types";
-import { checkConfigExists } from "../utils/checkConfigExists";
-import { handleError, parseConfigYaml, parseYYYYMMDD } from "../utils/parsers";
 import { initClient } from "../client";
 import { generateFetchIssuesQuery, generateFetchReposQuery } from "../queries";
-import CliTable3 from "cli-table3";
-import { generateHeader } from "../utils/table";
-import ora from "ora";
-import { sleep } from "../utils/sleep";
+import { Config, IssueFetchResp, RepoFetchResp } from "../types";
+import {
+  constants,
+  checkConfigExists,
+  parsers,
+  sleep,
+  generateHeader,
+} from "../utils";
+
+const { configOutputPath, SLEEP_TIME } = constants;
+const { handleError, parseConfigYaml, parseYYYYMMDD } = parsers;
 
 export interface RepoResult {
   [key: string]: RepoFetchResp;

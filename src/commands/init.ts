@@ -1,22 +1,23 @@
+import chalk from "chalk";
+import figlet from "figlet";
+import yaml from "js-yaml";
+import { CommandModule } from "yargs";
+
 import fs from "fs";
 import path from "path";
 
-import { CommandModule } from "yargs";
-import chalk from "chalk";
-import yaml from "js-yaml";
-import figlet from "figlet";
-
-import { safeClear } from "../utils/safeClear";
-import { tokenQuestion } from "../questions/token";
-import { addIssueQuestions, initIssuesQuestion } from "../questions/issues";
-import { initReposQuestion, addRepoQuestions } from "../questions/repos";
 import {
-  configOutputPath,
-  configDir,
-  configTemplateName,
-} from "../utils/constants";
-import { isStringArray, parseConfigYaml, handleError } from "../utils/parsers";
+  tokenQuestion,
+  addRepoQuestions,
+  addIssueQuestions,
+  initReposQuestion,
+  initIssuesQuestion,
+} from "../questions";
 import { Config, InitObject } from "../types";
+import { safeClear, constants, parsers } from "../utils";
+
+const { configOutputPath, configDir, configTemplateName } = constants;
+const { isStringArray, parseConfigYaml, handleError } = parsers;
 
 const generateConfigFile = async (
   configDir: string,

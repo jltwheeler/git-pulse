@@ -1,4 +1,5 @@
 import oraMock from "../mocks/ora";
+import { mockServer } from "../mocks/server";
 import configCommand from "../commands/config";
 import {
   asyncCommand,
@@ -11,8 +12,6 @@ import {
   testRepos,
   TOKEN,
 } from "./testHelpers";
-
-import { mockServer } from "../mocks/server";
 import * as questionTokens from "../questions/token";
 import { Config } from "../types";
 
