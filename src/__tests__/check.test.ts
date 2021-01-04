@@ -9,7 +9,10 @@ import {
   createDummyConfig,
   fetchIssuesResult,
   fetchReposResult,
+  issueTableVals,
   removeConfig,
+  repoTableValsEmpty,
+  repoTableValsFull,
 } from "./testHelpers";
 import { mockServer } from "../mocks/server";
 import stripAnsi from "strip-ansi";
@@ -107,7 +110,7 @@ describe("Fetch command", () => {
       const expected = [
         [
           "CesiumGS / gltf-pipeline",
-          `Error: Draco encoding failed.\n-------------\n${link}`,
+          `Title X\n-------------\n${link}`,
           "OPEN",
           "2020-07-08",
           "2020-07-08",
@@ -116,6 +119,52 @@ describe("Fetch command", () => {
         ],
       ];
       expect(output).toEqual(expected);
+    });
+  });
+
+  describe("Display repo table", () => {
+    test("should correctly displays repo data as table", async () => {
+      createDummyConfig();
+
+      await asyncCommand(checkCommand, ["check", "-r"]);
+
+      repoTableValsFull.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+
+      repoTableValsEmpty.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+    });
+  });
+
+  describe("Display issue table", () => {
+    test("should correctly displays issue data as table", async () => {
+      createDummyConfig();
+
+      await asyncCommand(checkCommand, ["check", "-i"]);
+
+      issueTableVals.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+    });
+  });
+
+  describe("Display issue and repo tables", () => {
+    test("should correctly displays both the issue and repo tables", async () => {
+      createDummyConfig();
+
+      await asyncCommand(checkCommand, ["check", "-a"]);
+
+      repoTableValsFull.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+      repoTableValsEmpty.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+      issueTableVals.forEach((item) => {
+        expect(spyConsole.mock.calls[1][0]).toContain(item);
+      });
     });
   });
 

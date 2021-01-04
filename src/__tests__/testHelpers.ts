@@ -82,7 +82,7 @@ export const fetchIssuesResult = {
     name: "gltf-pipeline",
     owner: { login: "CesiumGS" },
     issue: {
-      title: "Error: Draco encoding failed.",
+      title: "Title X",
       closedAt: null,
       createdAt: "2020-07-08T16:12:55Z",
       lastEditedAt: "2020-07-08T19:51:29Z",
@@ -96,6 +96,15 @@ export const fetchIssuesResult = {
     },
   },
 };
+
+export const issueTableVals = [
+  fetchIssuesResult.fetchRepo0.name,
+  fetchIssuesResult.fetchRepo0.owner.login,
+  fetchIssuesResult.fetchRepo0.issue.title,
+  fetchIssuesResult.fetchRepo0.issue.state,
+  fetchIssuesResult.fetchRepo0.issue.reactions.totalCount,
+  fetchIssuesResult.fetchRepo0.issue.comments.totalCount,
+];
 
 export const fetchReposResult = {
   fetchRepo0: {
@@ -118,8 +127,7 @@ export const fetchReposResult = {
         },
       ],
     },
-    shortDescriptionHTML:
-      "TypeScript is a superset of JavaScript that compiles to clean JavaScript output.",
+    shortDescriptionHTML: "desc",
     stargazerCount: 67433,
     url: "https://github.com/microsoft/TypeScript",
   },
@@ -133,8 +141,29 @@ export const fetchReposResult = {
     releases: {
       edges: [],
     },
-    shortDescriptionHTML: "This is a test",
+    shortDescriptionHTML: "desc",
     stargazerCount: 1,
     url: "https://github.com/test/tester",
   },
 };
+
+export const repoTableValsFull = [
+  fetchReposResult.fetchRepo0.name,
+  fetchReposResult.fetchRepo0.owner.login,
+  fetchReposResult.fetchRepo0.forkCount,
+  fetchReposResult.fetchRepo0.issues.totalCount,
+  fetchReposResult.fetchRepo0.pullRequests.totalCount,
+  fetchReposResult.fetchRepo0.stargazerCount,
+  fetchReposResult.fetchRepo0.releases.edges[0].node.name,
+  fetchReposResult.fetchRepo0.releases.edges[0].node.shortDescriptionHTML,
+];
+
+export const repoTableValsEmpty = [
+  fetchReposResult.fetchRepo1.name,
+  fetchReposResult.fetchRepo1.owner.login,
+  fetchReposResult.fetchRepo1.forkCount,
+  fetchReposResult.fetchRepo1.issues.totalCount,
+  fetchReposResult.fetchRepo1.pullRequests.totalCount,
+  fetchReposResult.fetchRepo1.stargazerCount,
+  fetchReposResult.fetchRepo1.refs.nodes[0].name,
+];
