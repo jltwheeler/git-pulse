@@ -17,6 +17,8 @@ jest.mock("../questions/issues");
 jest.mock("../questions/repos");
 jest.mock("../questions/token");
 
+const spyConsole = jest.spyOn(console, "log");
+
 describe("Initialise command", () => {
   beforeAll(() => {
     mockServer.listen();
@@ -30,9 +32,11 @@ describe("Initialise command", () => {
     test("should let user know a config file already exists if init has already been run", async () => {
       createDummyConfig();
 
-      const command = asyncCommand(init, ["init"]);
+      await asyncCommand(init, ["init"]);
 
-      await expect(command).rejects.toThrow(Error);
+      expect(spyConsole.mock.calls[0][0]).toContain(
+        "Config file already exists",
+      );
     });
   });
 
