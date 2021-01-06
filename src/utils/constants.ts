@@ -14,4 +14,4 @@ export const configOutputPath: string = path.resolve(
 export const GITHUB_API_ENDPOINT = "https://api.github.com/graphql";
 export const repoRegex = RegExp(/(?<=github.com\/)(.+\/.+$)/);
 export const dateRegex = RegExp(/\d\d\d\d-\d\d-\d\d/);
-export const SLEEP_TIME = 500;
+export const SLEEP_TIME = process.env["NODE_ENV"] === "test" ? 0 : 500;

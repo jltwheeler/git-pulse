@@ -50,15 +50,18 @@ const initCommand: CommandModule = {
     let repos: string[] = [];
     let issues: string[] = [];
 
-    safeClear();
-
-    if (fs.existsSync(configDir)) {
-      return Promise.reject(
-        new Error(
-          `Config file already exists at: ${configOutputPath}. Please use git-pulse config commands to update any config settings.`,
-        ),
-      );
+    try {
+      if (fs.existsSync(configDir)) {
+        throw new Error(
+          `Config file already exists at: ${configOutputPath}. Please use gpulse config commands to update any config settings.`,
+        );
+      }
+    } catch (error) {
+      handleError(error);
+      return;
     }
+
+    safeClear();
 
     console.log(
       chalk.blueBright(
@@ -71,10 +74,20 @@ const initCommand: CommandModule = {
 
     console.log(
       `This is the ${chalk.blueBright.bold(
-        "git-pulse configuration wizard",
+        "gpulse configuration wizard",
       )}, which will help you generate a configuration file. It will ask you a few questions and configure your ${chalk.blueBright.bold(
         ".git-pulse conf file",
-      )}.\n`,
+      )}.\n\n`,
+    );
+
+    console.log(
+      `To start, you will need a ${chalk.blueBright(
+        "GitHub account",
+      )} and a ${chalk.blueBright(
+        "GitHub authentication token",
+      )}, which you can generate at ${chalk.blueBright(
+        "https://github.com/settings/tokens",
+      )}\n\n`,
     );
 
     try {

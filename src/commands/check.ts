@@ -142,17 +142,20 @@ const checkCommand: CommandModule = {
     repo: {
       alias: "r",
       describe: "Add a repository by passing in the full repository URL",
-      boolean: false,
+      type: "boolean",
+      default: false,
     },
     issue: {
       alias: "i",
       describe: "Add an issue by passing in the full issue URL",
-      boolean: false,
+      type: "boolean",
+      default: false,
     },
     all: {
       alias: "a",
       describe: "",
-      boolean: false,
+      type: "boolean",
+      default: true,
     },
   },
   handler: async (args) => {
@@ -185,7 +188,7 @@ const checkCommand: CommandModule = {
         spinner.stop();
 
         displayIssueTable(result);
-      } else if (args.a) {
+      } else {
         const spinner = ora(
           "Fetching repository and issue information",
         ).start();
@@ -200,10 +203,6 @@ const checkCommand: CommandModule = {
 
         displayRepoTable(repoResult);
         displayIssueTable(issueResult);
-      } else {
-        throw new Error(
-          "Error. Please specify if you wish to check info on a repo (-r), issue (-i) or both (-a).",
-        );
       }
     } catch (error) {
       handleError(error);
