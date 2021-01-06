@@ -46,13 +46,19 @@ describe("Fetch command", () => {
   });
 
   describe("Run without args", () => {
-    test("should throw error and notify user of the error.", async () => {
+    test("should display all information.", async () => {
       createDummyConfig();
       await asyncCommand(checkCommand, ["check"]);
 
-      expect(spyConsole.mock.calls[0][0]).toContain(
-        "specify if you wish to check info on a",
-      );
+      repoTableValsFull.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+      repoTableValsEmpty.forEach((item) => {
+        expect(spyConsole.mock.calls[0][0]).toContain(item);
+      });
+      issueTableVals.forEach((item) => {
+        expect(spyConsole.mock.calls[1][0]).toContain(item);
+      });
     });
   });
 
