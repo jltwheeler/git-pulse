@@ -237,7 +237,7 @@ const lsSubCommand: CommandModule = {
 
 const configCommand: CommandModule = {
   command: "config",
-  describe: "Manage git-pulse configs.",
+  describe: "Manage gpulse configs.",
   builder: (yargs) => {
     return yargs
       .command(lsSubCommand)

@@ -4,7 +4,7 @@
   "description": "CLI tool to display concise information from github repos you follow",
   "main": "./build/index.js",
   "bin": {
-    "git-pulse": "./build/index.js"
+    "gpulse": "./build/index.js"
   },
   "files": [
     "build"
