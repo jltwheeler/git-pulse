@@ -9,7 +9,7 @@
 
   <h3 align="center">Git Pulse</h3>
 
-  <p align="center">Node CLI tool to get concise information from the github repos you follow!
+  <p align="center">Node CLI tool that makes it easy to track GitHub repos and issues of interest.
     <br />
     <br />
     <a href="https://github.com/jltwheeler/git-pulse/issues">Report Bug</a>
@@ -24,6 +24,7 @@
 
 - [TODO](#todo)
 - [About the Project](#about-the-project)
+  - [The Need](#the-need)
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
@@ -34,28 +35,6 @@
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
 
-## TODO
-
-- Commands:
-  - init [--token, --issues , --repos]
-  - repos [add, ls, rm]
-  - issues [add, ls, rm]
-  - config [ls, token]
-  - stats
-  - trending [repos, devs] - will need to write scraper for this
-  - help
-  - validate
-  - version
-- styling outputs
-- Repo admin - contribution guide, issue/feature templates etc.
-- best way to test yargs, integration using execa?
-- Establish CI/CD pipeline using github actions. Tasks should include:
-  - install (`npm ci` and `npm audit`)
-  - lint (`eslint` and `prettier`)
-  - test (`jest` + generate code coverage)
-  - build (transpile using `typescript`)
-  - push (release tag `github` and `npm publish`)
-
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
@@ -63,6 +42,10 @@
 <!-- put screen shot here?  -->
 
 Node CLI tool to get concise information from github repos you follow.
+
+### The Need
+
+blah blah blah
 
 ### Built With
 
@@ -101,7 +84,9 @@ npm i -g git-pulse
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Use this space to show useful examples of how a project can be used. Additional
+screenshots, code examples and demos work well in this space. You may also link
+to more resources.
 
 <!-- CONTRIBUTING -->
 
