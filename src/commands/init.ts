@@ -50,8 +50,6 @@ const initCommand: CommandModule = {
     let repos: string[] = [];
     let issues: string[] = [];
 
-    safeClear();
-
     try {
       if (fs.existsSync(configDir)) {
         throw new Error(
@@ -62,6 +60,8 @@ const initCommand: CommandModule = {
       handleError(error);
       return;
     }
+
+    safeClear();
 
     console.log(
       chalk.blueBright(
