@@ -113,7 +113,7 @@ npm i -g git-pulse
 2. Set up your GitHub authentication token. Go to [this link](https://github.com/settings/tokens/new)
    to set up a token for your account.
 
-3. Set up your initial configuration by running `gpulse config` , and follow the
+3. Set up your initial configuration by running `gpulse init` , and follow the
    interactive wizard.
 
 <!-- USAGE EXAMPLES -->
